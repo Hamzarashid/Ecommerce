@@ -24,6 +24,7 @@ const GlobalStyle = createGlobalStyle`
     height: 1.8em;
     border-inline-start: 2px solid rgba(5, 5, 5, 0.06);
   }
+
 `;
 
 export default GlobalStyle;

@@ -7,9 +7,9 @@ import {
   SmileOutlined,
   UserAddOutlined,
 } from "@ant-design/icons";
-import { Drawer, Popover, Space } from "antd";
+import { Drawer, Popover, Space, Badge } from "antd";
 import { useResponsive } from "antd-style";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { categories } from "../../constants";
 import {
   BottomContainer,
@@ -72,10 +72,14 @@ const Header = () => {
                 >
                   <BellOutlined />
                 </Popover>
+                <Badge count={3} size="small" color="#7B0323">
                 <HeartOutlined onClick={() => toggleDrawer(true, "wishlist")} />
+                </Badge>   
+                <Badge count={5} size="small" color="#7B0323">
                 <ShoppingCartOutlined
                   onClick={() => toggleDrawer(true, "cart")}
                 />
+                  </Badge>  
                 <Drawer
                   title="Basic Drawer"
                   placement="right"
