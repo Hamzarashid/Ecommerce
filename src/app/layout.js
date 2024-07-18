@@ -1,9 +1,9 @@
-'use client'
-import StyledComponentsRegistry from "../../lib/registry";
+"use client";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
-import GlobalStyle from "./globalsStyled";
+import StyledComponentsRegistry from "../../lib/registry";
 import Footer from "./components/footer";
 import Header from "./components/Header/header";
+import GlobalStyle from "./globalsStyled";
 
 export default function RootLayout({ children }) {
   return (
@@ -12,9 +12,9 @@ export default function RootLayout({ children }) {
         <AntdRegistry>
           <StyledComponentsRegistry>
             <GlobalStyle />
-            <Header/>
+            <Header />
             <main>{children}</main>
-            <Footer/>
+            <Footer />
           </StyledComponentsRegistry>
         </AntdRegistry>
       </body>
