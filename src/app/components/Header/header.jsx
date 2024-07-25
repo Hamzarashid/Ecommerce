@@ -6,11 +6,11 @@ import {
   ShoppingCartOutlined,
   SmileOutlined,
   UserAddOutlined,
-} from "@ant-design/icons";
-import { Drawer, Popover, Space, Badge } from "antd";
-import { useResponsive } from "antd-style";
-import { useRef, useState } from "react";
-import { categories } from "../../constants";
+} from '@ant-design/icons';
+import { Drawer, Popover, Space, Badge } from 'antd';
+import { useResponsive } from 'antd-style';
+import { useRef, useState } from 'react';
+import { categories } from '../../constants';
 import {
   BottomContainer,
   CategoriesWrapper,
@@ -21,13 +21,13 @@ import {
   NavCenter,
   PopoverContent,
   Section,
-} from "./headerStyled";
+} from './headerStyled';
 
 const Header = () => {
   const navCenterRef = useRef(null);
   const breakpoints = useResponsive();
   const [open, setOpen] = useState(false);
-  const [drawerContent, setDrawerContent] = useState("cart");
+  const [drawerContent, setDrawerContent] = useState('cart');
 
   const toggleDrawer = (target, content) => {
     setOpen(target);
@@ -61,39 +61,31 @@ const Header = () => {
               </Section>
               <UserAddOutlined />
               <HeaderIcon gap="15px">
-                <SearchOutlined onClick={() => toggleDrawer(true, "search")}/>
-                <Popover
-                  content={
-                    <PopoverContent vertical justify="center" align="center">
-                      <SmileOutlined /> <p>Notification</p>
-                    </PopoverContent>
-                  }
-                  trigger="click"
-                >
-                  <BellOutlined />
-                </Popover>
+                <SearchOutlined onClick={() => toggleDrawer(true, 'search')} />
                 <Badge count={3} size="small" color="#7B0323">
-                <HeartOutlined onClick={() => toggleDrawer(true, "wishlist")} />
-                </Badge>   
+                  <HeartOutlined
+                    onClick={() => toggleDrawer(true, 'wishlist')}
+                  />
+                </Badge>
                 <Badge count={5} size="small" color="#7B0323">
-                <ShoppingCartOutlined
-                  onClick={() => toggleDrawer(true, "cart")}
-                />
-                  </Badge>  
+                  <ShoppingCartOutlined
+                    onClick={() => toggleDrawer(true, 'cart')}
+                  />
+                </Badge>
                 <Drawer
                   title="Basic Drawer"
                   placement="right"
                   onClose={() => toggleDrawer(false, drawerContent)}
                   open={open}
                 >
-                  {drawerContent === "cart" && (
+                  {drawerContent === 'cart' && (
                     <>
                       <p>Cart contents...</p>
                       <p>Some contents...</p>
                       <p>Some contents...</p>
                     </>
                   )}
-                  {drawerContent === "wishlist" && (
+                  {drawerContent === 'wishlist' && (
                     <>
                       <p>Wishlist contents...</p>
                       <p>Some contents...</p>
@@ -101,7 +93,7 @@ const Header = () => {
                     </>
                   )}
 
-                  {drawerContent === "search" && (
+                  {drawerContent === 'search' && (
                     <>
                       <p>Search contents...</p>
                       <p>Some contents...</p>
