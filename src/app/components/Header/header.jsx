@@ -1,13 +1,11 @@
 import {
-  BellOutlined,
   DownOutlined,
   HeartOutlined,
   SearchOutlined,
   ShoppingCartOutlined,
-  SmileOutlined,
   UserAddOutlined,
 } from '@ant-design/icons';
-import { Drawer, Popover, Space, Badge } from 'antd';
+import { Badge, Drawer, Space } from 'antd';
 import { useResponsive } from 'antd-style';
 import { useRef, useState } from 'react';
 import { categories } from '../../constants';
@@ -19,7 +17,6 @@ import {
   HeaderIcon,
   NavBottom,
   NavCenter,
-  PopoverContent,
   Section,
 } from './headerStyled';
 

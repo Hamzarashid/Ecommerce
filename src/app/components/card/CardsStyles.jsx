@@ -1,6 +1,6 @@
-import styled, { keyframes } from 'styled-components';
-import NextImage from 'next/image';
 import { Flex } from 'antd';
+import NextImage from 'next/image';
+import styled, { keyframes } from 'styled-components';
 
 const fadeIn = keyframes`
     from {

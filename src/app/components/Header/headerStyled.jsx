@@ -1,12 +1,12 @@
-import styled from "styled-components";
-import { Button, Dropdown as dd, Flex } from "antd";
+import { Button, Dropdown as dd, Flex } from 'antd';
+import styled from 'styled-components';
 
 export const HeaderBottom = styled.div`
-top: 0;
-left: 0;
-width: 100%;
-z-index: 1000;
-background-color: #fff;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: #fff;
 `;
 
 export const BottomContainer = styled.div`
@@ -14,11 +14,11 @@ export const BottomContainer = styled.div`
 `;
 
 export const NavTop = styled(Flex)`
-  padding: "5px 70px";
+  padding: '5px 70px';
 `;
 
 export const NavCenter = styled(Flex)`
-  padding:"20px 70px";
+  padding: '20px 70px';
 `;
 
 export const Section = styled(Flex)`
@@ -26,7 +26,6 @@ export const Section = styled(Flex)`
   button {
     border-radius: 2px;
     min-height: 50px;
-    
   }
 `;
 
@@ -38,7 +37,7 @@ export const Dropdown = styled(dd)`
 `;
 
 export const CategoriesWrapper = styled(Button)`
-  background-color: #7B0323;
+  background-color: #7b0323;
   display: inline;
   font-weight: 500;
   color: white;
@@ -52,7 +51,6 @@ export const PopoverContent = styled(Flex)`
   font-size: 1.8rem;
 `;
 export const HeaderIcon = styled(Flex)`
-padding:14px;
- align-items: center;
+  padding: 14px;
+  align-items: center;
 `;
-

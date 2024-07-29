@@ -1,6 +1,6 @@
-import styled from 'styled-components';
 import { Carousel } from 'antd';
 import Image from 'next/image';
+import styled from 'styled-components';
 
 export const StyledCarousel = styled(Carousel)`
   width: 100%;
@@ -9,11 +9,11 @@ export const StyledCarousel = styled(Carousel)`
 
 export const CarouselItem = styled.div`
   position: relative;
-  height: 500px; 
+  height: 500px;
 `;
 
 export const StyledImage = styled(Image)`
-  object-fit: cover; 
+  object-fit: cover;
   width: 100%;
   height: 100%;
 `;

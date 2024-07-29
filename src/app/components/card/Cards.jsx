@@ -1,5 +1,6 @@
 'use client';
 import { HeartFilled, ShoppingCartOutlined } from '@ant-design/icons';
+import { cardData } from '../../constants';
 import HeaderText from '../HeaderText/HeaderText';
 import {
   AddToCart,
@@ -12,28 +13,6 @@ import {
   InnerNested,
   Price,
 } from './CardsStyles';
-const cardData = [
-  {
-    image: 'https://picsum.photos/800/500?random=1',
-    description: 'Product 1',
-    price: '1000',
-  },
-  {
-    image: 'https://picsum.photos/800/500?random=2',
-    description: 'Product 2',
-    price: '2000',
-  },
-  {
-    image: 'https://picsum.photos/800/500?random=3',
-    description: 'Product 3',
-    price: '3000',
-  },
-  {
-    image: 'https://picsum.photos/800/500?random=4',
-    description: 'Product 4',
-    price: '4000',
-  },
-];
 
 function Cards() {
   return (
