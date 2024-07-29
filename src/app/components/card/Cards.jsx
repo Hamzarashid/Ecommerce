@@ -13,8 +13,16 @@ import {
   InnerNested,
   Price,
 } from './CardsStyles';
+import { useRouter } from 'next/navigation';
 
 function Cards() {
+  const router = useRouter();
+
+  const handleCardClick = (product) => {
+    router.push(`/product/${product.id}`);
+    console.log(product);
+  };
+
   return (
     <>
       <HeaderText
@@ -23,7 +31,7 @@ function Cards() {
       />
       <CardsContainer>
         {cardData.map((item, index) => (
-          <Card key={index}>
+          <Card key={index} onClick={() => handleCardClick(item)}>
             <InnerNested>
               <Image width={350} height={200} src={item.image} alt="image" />
               <Heart>

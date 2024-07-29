@@ -13,6 +13,7 @@ import {
   ReviewsContainer,
   ReviewsSubtitle,
   ReviewsTitle,
+  ReviewsTitleContainer,
   Title,
 } from './ReviewStyled';
 
@@ -40,9 +41,13 @@ const Review = () => {
   return (
     <ParentContainer>
       <ReviewsContainer>
-        <ReviewsTitle>Let customers speak for us</ReviewsTitle>
-        <Rate disabled defaultValue={5} style={{ color: '#d3d21e' }} />
-        <ReviewsSubtitle>from 137 reviews</ReviewsSubtitle>
+        <ReviewsTitleContainer>
+          <ReviewsTitle>Let customers speak for us</ReviewsTitle>
+          <div>
+            <Rate disabled defaultValue={5} style={{ color: '#d3d21e' }} />
+            <span>from 137 reviews</span>
+          </div>
+        </ReviewsTitleContainer>
         <CarouselWrap>
           <Carousel
             autoplay

@@ -11,21 +11,25 @@ export const categories = [
 // Card Data
 export const cardData = [
   {
+    id: 1,
     image: 'https://picsum.photos/800/500?random=1',
     description: 'Product 1',
     price: '1000',
   },
   {
+    id: 2,
     image: 'https://picsum.photos/800/500?random=2',
     description: 'Product 2',
     price: '2000',
   },
   {
+    id: 3,
     image: 'https://picsum.photos/800/500?random=3',
     description: 'Product 3',
     price: '3000',
   },
   {
+    id: 4,
     image: 'https://picsum.photos/800/500?random=4',
     description: 'Product 4',
     price: '4000',
@@ -101,6 +105,13 @@ export const reviews = [
     title: 'Value for Money',
     description: 'Great Quality',
     reviewer: 'Abbas Ahmad',
+    rating: 5,
+  },
+  {
+    id: 4,
+    title: 'Great Quality',
+    description: 'Great Quality',
+    reviewer: ' Ahmad khan',
     rating: 5,
   },
 ];

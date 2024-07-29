@@ -35,72 +35,67 @@ const Header = () => {
     <>
       <HeaderBottom ref={navCenterRef}>
         <NavCenter
-          breakpoints={breakpoints}
           align="center"
           justify="space-between"
           gap="50px"
         ></NavCenter>
-        <BottomContainer breakpoints={breakpoints}>
-          {breakpoints.xl && (
-            <NavBottom justify="space-between">
-              <Section align="center">
-                <Dropdown menu={{ items: categories }}>
-                  <CategoriesWrapper
-                    type="text"
-                    onClick={(e) => e.preventDefault()}
-                  >
-                    <Space>
-                      Categories
-                      <DownOutlined rotate={360} />
-                    </Space>
-                  </CategoriesWrapper>
-                </Dropdown>
-              </Section>
-              <UserAddOutlined />
-              <HeaderIcon gap="15px">
-                <SearchOutlined onClick={() => toggleDrawer(true, 'search')} />
-                <Badge count={3} size="small" color="#7B0323">
-                  <HeartOutlined
-                    onClick={() => toggleDrawer(true, 'wishlist')}
-                  />
-                </Badge>
-                <Badge count={5} size="small" color="#7B0323">
-                  <ShoppingCartOutlined
-                    onClick={() => toggleDrawer(true, 'cart')}
-                  />
-                </Badge>
-                <Drawer
-                  title="Basic Drawer"
-                  placement="right"
-                  onClose={() => toggleDrawer(false, drawerContent)}
-                  open={open}
+        <BottomContainer>
+          <NavBottom justify="space-between">
+            <Section align="center">
+              <Dropdown menu={{ items: categories }}>
+                <CategoriesWrapper
+                  type="text"
+                  onClick={(e) => e.preventDefault()}
                 >
-                  {drawerContent === 'cart' && (
-                    <>
-                      <p>Cart contents...</p>
-                      <p>Some contents...</p>
-                      <p>Some contents...</p>
-                    </>
-                  )}
-                  {drawerContent === 'wishlist' && (
-                    <>
-                      <p>Wishlist contents...</p>
-                      <p>Some contents...</p>
-                      <p>Some contents...</p>
-                    </>
-                  )}
+                  <Space>
+                    Categories
+                    <DownOutlined rotate={360} />
+                  </Space>
+                </CategoriesWrapper>
+              </Dropdown>
+            </Section>
+            <UserAddOutlined />
+            <HeaderIcon gap="15px">
+              <SearchOutlined onClick={() => toggleDrawer(true, 'search')} />
+              <Badge count={3} size="small" color="#7B0323">
+                <HeartOutlined onClick={() => toggleDrawer(true, 'wishlist')} />
+              </Badge>
+              <Badge count={5} size="small" color="#7B0323">
+                <ShoppingCartOutlined
+                  onClick={() => toggleDrawer(true, 'cart')}
+                />
+              </Badge>
+              <Drawer
+                title="Basic Drawer"
+                placement="right"
+                onClose={() => toggleDrawer(false, drawerContent)}
+                open={open}
+              >
+                {drawerContent === 'cart' && (
+                  <>
+                    <p>Cart contents...</p>
+                    <p>Some contents...</p>
+                    <p>Some contents...</p>
+                  </>
+                )}
+                {drawerContent === 'wishlist' && (
+                  <>
+                    <p>Wishlist contents...</p>
+                    <p>Some contents...</p>
+                    <p>Some contents...</p>
+                  </>
+                )}
 
-                  {drawerContent === 'search' && (
-                    <>
-                      <p>Search contents...</p>
-                      <p>Some contents...</p>
-                      <p>Some contents...</p>
-                    </>
-                  )}
-                </Drawer>
-              </HeaderIcon>
-            </NavBottom>
-          )}
+                {drawerContent === 'search' && (
+                  <>
+                    <p>Search contents...</p>
+                    <p>Some contents...</p>
+                    <p>Some contents...</p>
+                  </>
+                )}
+              </Drawer>
+            </HeaderIcon>
+          </NavBottom>
         </BottomContainer>
       </HeaderBottom>
     </>

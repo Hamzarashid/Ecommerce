@@ -25,6 +25,33 @@ export const ReviewsContainer = styled.div`
   }
 `;
 
+export const ReviewsTitleContainer = styled.h2`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  & div {
+    display: flex;
+    gap: 10px;
+  }
+
+  & span {
+    font-size: 16px;
+    font-weight: normal;
+  }
+  @media (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 10px;
+  }
+`;
+
+export const ReviewsTitle = styled.h2`
+  font-size: 24px;
+  font-weight: bold;
+`;
+
 export const CarouselWrap = styled.div`
   position: relative;
 
@@ -118,14 +145,4 @@ export const Title = styled.h3`
 export const Description = styled.p`
   font-size: 14px;
   color: #666;
-`;
-
-export const ReviewsTitle = styled.h2`
-  font-size: 24px;
-  font-weight: bold;
-`;
-
-export const ReviewsSubtitle = styled.p`
-  margin: 10px 0;
-  font-size: 16px;
 `;
