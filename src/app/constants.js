@@ -115,3 +115,24 @@ export const reviews = [
     rating: 5,
   },
 ];
+
+// tabs Data
+export const tabreviews = [
+  {
+    id: 1,
+    rating: 5,
+    title: 'Beautiful Color',
+    content: 'Beautiful Color my Fav...Quality was zabardast',
+    date: '04/24/2024',
+    author: 'Demo',
+  },
+  {
+    id: 2,
+    rating: 5,
+    title: 'Pure DriFit Material',
+    content:
+      'effectively manage moisture and keep me feeling fresh and comfortable, even during the most intense workouts.',
+    date: '04/24/2024',
+    author: 'SomeOne',
+  },
+];

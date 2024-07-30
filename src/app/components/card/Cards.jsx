@@ -1,4 +1,5 @@
 'use client';
+import React, { useState } from 'react';
 import { HeartFilled, ShoppingCartOutlined } from '@ant-design/icons';
 import { cardData } from '../../constants';
 import HeaderText from '../HeaderText/HeaderText';
@@ -17,10 +18,14 @@ import { useRouter } from 'next/navigation';
 
 function Cards() {
   const router = useRouter();
+  const [cart, setCart] = useState([]);
 
   const handleCardClick = (product) => {
     router.push(`/product/${product.id}`);
-    console.log(product);
+  };
+
+  const handleAddToCart = (product) => {
+    setCart((prevCart) => [...prevCart, product]);
   };
 
   return (
@@ -37,7 +42,12 @@ function Cards() {
               <Heart>
                 <HeartFilled />
               </Heart>
-              <AddToCart>
+              <AddToCart
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleAddToCart(item);
+                }}
+              >
                 <p>Add to Cart</p> <ShoppingCartOutlined />
               </AddToCart>
             </InnerNested>
