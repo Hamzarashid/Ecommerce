@@ -1,8 +1,9 @@
 'use client';
-import { Button, Drawer, Flex, Radio, Rate, Typography } from 'antd';
+import { Button, Drawer, Flex, Radio, Rate, Space, Typography } from 'antd';
 import {
   ButtonWrapper,
   Card,
+  CarouselImage,
   CustomButton,
   CustomDrawer,
   CustomInput,
@@ -17,11 +18,13 @@ import {
   SizeGuideLink,
   StockBar,
   StockIndicator,
+  StyledCarousel,
   TextWrapper,
   Title,
 } from './ProductDetailStyled';
-import ProductDetailTab from './ProductDetailTab';
-import { useState } from 'react';
+import ProductDetailTab from './producttab/ProductDetailTab';
+import { images } from '../../constants';
+import { useProduct } from '../../../context/Product';
 
 const { Text } = Typography;
 
@@ -29,20 +32,17 @@ const ProductDetail = () => {
   const stock = 5;
   const stockPercentage = (stock / 100) * 100;
 
-  const [open, setOpen] = useState(false);
-
-  const showDrawer = () => {
-    setOpen(true);
-  };
-  const onClose = () => {
-    setOpen(false);
-  };
-
   return (
-    <ParentContainer vertical>
+    <ParentContainer vertical justify="space-around">
       <DetailContainer>
         <ImageContainer>
-          <img src="https://picsum.photos/800/500?random=3" alt="carousel" />
+          <StyledCarousel autoplay arrows dots={false}>
+            {images.map((src, index) => (
+              <div key={index}>
+                <CarouselImage src={src} alt={`carousel-${index}`} />
+              </div>
+            ))}
+          </StyledCarousel>
         </ImageContainer>
         <InfoContainer>
           <Card>
@@ -78,10 +78,12 @@ const ProductDetail = () => {
               <Radio.Button value="L">L</Radio.Button>
             </CustomRadioGroup>
             <ButtonWrapper>
-              <Button size="30px">-</Button>
-              <CustomInput defaultValue={1} />
-              <Button>+</Button>
-              <CustomButton onClick={showDrawer}>ADD TO CART</CustomButton>
+              <Space.Compact block>
+                <CustomButton type="primary">-</CustomButton>
+                <CustomInput defaultValue={1} />
+                <CustomButton type="primary">+</CustomButton>
+              </Space.Compact>
+              <CustomButton>ADD TO CART</CustomButton>
             </ButtonWrapper>
           </Card>
         </InfoContainer>

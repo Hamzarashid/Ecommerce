@@ -115,6 +115,14 @@ export const reviews = [
     rating: 5,
   },
 ];
+// Product Detail Carousel
+
+export const images = [
+  'https://picsum.photos/200/200?random=1',
+  'https://picsum.photos/200/200?random=2',
+  'https://picsum.photos/200/200?random=3',
+  'https://picsum.photos/200/200?random=4',
+];
 
 // tabs Data
 export const tabreviews = [

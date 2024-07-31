@@ -15,6 +15,7 @@ import {
   Price,
 } from './CardsStyles';
 import { useRouter } from 'next/navigation';
+import { useProduct } from '../../../context/Product';
 
 function Cards() {
   const router = useRouter();

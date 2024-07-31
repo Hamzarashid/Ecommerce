@@ -1,11 +1,10 @@
 'use client';
 import { Divider, Flex, List, Rate, Table, Tabs, Typography } from 'antd';
-import { tabreviews } from '../../constants';
+import { tabreviews } from '../../../constants';
 import {
   CustomButton,
   CustomProgress,
   CustomTabs,
-  CustomTabsPane,
   DescriptionContainer,
   DescriptionText,
   HighlightText,
@@ -21,7 +20,7 @@ const { TabPane } = Tabs;
 const ProductDetailTab = () => {
   return (
     <CustomTabs defaultActiveKey="1">
-      <CustomTabsPane tab="Description" key="1" className="custom-tab-pane">
+      <TabPane tab="Description" key="1" className="custom-tab-pane">
         <DescriptionContainer>
           <ul>
             <li>Export Quality.</li>
@@ -38,7 +37,7 @@ const ProductDetailTab = () => {
             Don’t Iron on Logos.
           </DescriptionText>
         </DescriptionContainer>
-      </CustomTabsPane>
+      </TabPane>
       <TabPane tab="Additional Information" key="2">
         <Flex justify="space-around">
           <Text>Size</Text>

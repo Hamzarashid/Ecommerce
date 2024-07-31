@@ -1,5 +1,6 @@
 import {
   Button as AntButton,
+  Carousel,
   Drawer,
   Flex,
   Input,
@@ -8,7 +9,6 @@ import {
 } from 'antd';
 import styled, { keyframes } from 'styled-components';
 
-// Responsive breakpoints
 const breakpoints = {
   mobile: '768px',
   tablet: '1024px',
@@ -34,11 +34,64 @@ export const DetailContainer = styled(Flex)`
 `;
 
 export const ImageContainer = styled.div`
-  width: 100%;
+  width: 550px;
+  height: 650px;
+
+  .slick-arrow {
+    color: black;
+    font-size: 32px;
+    border-radius: 50%;
+    padding: 20px;
+
+    &:after {
+      content: '';
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border-inline-width: 4px 0;
+      border-block-width: 4px 0;
+    }
+  }
 
   @media (max-width: ${breakpoints.tablet}) {
     width: 100%;
   }
+`;
+
+export const Container = styled.div`
+  display: flex;
+`;
+
+export const Thumbnails = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-right: 10px;
+
+  img {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    opacity: 0.5;
+    transition: opacity 0.3s;
+
+    &.active {
+      opacity: 1;
+    }
+  }
+`;
+export const StyledCarousel = styled(Carousel)`
+  width: 450px;
+  height: 100%;
+
+  @media (max-width: ${breakpoints.mobile}) {
+    width: 100%;
+  }
+`;
+
+export const CarouselImage = styled.img`
+  width: 100%;
+  height: 650px;
 `;
 
 export const InfoContainer = styled.div`
@@ -52,11 +105,14 @@ export const InfoContainer = styled.div`
 export const { Title, Text } = Typography;
 
 export const Card = styled.div`
-  padding: 16px;
-  border-radius: 8px;
-  max-width: 600px;
-  margin: 0 auto;
+  background: #ffffff;
+  padding: 20px;
   text-align: start;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: start;
+  height: 100%;
 
   @media (max-width: ${breakpoints.tablet}) {
     max-width: 100%;
@@ -67,7 +123,8 @@ export const Card = styled.div`
 export const StockBar = styled.div`
   background: #f8d7da;
   height: 8px;
-  margin: 8px 0;
+  width: 100%;
+  margin: 8px 0 0;
   position: relative;
   border-radius: 4px;
   overflow: hidden;
