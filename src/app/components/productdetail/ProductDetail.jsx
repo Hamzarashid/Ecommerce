@@ -1,11 +1,12 @@
 'use client';
-import { Button, Drawer, Flex, Radio, Rate, Space, Typography } from 'antd';
+import { Flex, Radio, Rate, Space, Typography } from 'antd';
+import { useEffect } from 'react';
+import { useStore } from '../../../context/Product';
 import {
   ButtonWrapper,
   Card,
   CarouselImage,
   CustomButton,
-  CustomDrawer,
   CustomInput,
   CustomRadioGroup,
   DetailContainer,
@@ -14,7 +15,6 @@ import {
   InfoContainer,
   OriginalPrice,
   ParentContainer,
-  Price,
   SizeGuideLink,
   StockBar,
   StockIndicator,
@@ -24,13 +24,19 @@ import {
 } from './ProductDetailStyled';
 import ProductDetailTab from './producttab/ProductDetailTab';
 import { images } from '../../constants';
-import { useProduct } from '../../../context/Product';
 
 const { Text } = Typography;
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-const ProductDetail = () => {
+const ProductDetail = ({ id }) => {
+  const { fetchProductById, singleProduct } = useStore();
   const stock = 5;
   const stockPercentage = (stock / 100) * 100;
+  useEffect(() => {
+    if (id) {
+      fetchProductById(id);
+    }
+  }, [id]);
 
   return (
     <ParentContainer vertical justify="space-around">
@@ -52,30 +58,30 @@ const ProductDetail = () => {
             <StockBar>
               <StockIndicator stockPercentage={stockPercentage} />
             </StockBar>
-            <Title level={4}>Addas Dri-fit Track Suit (Black)</Title>
+            <Title level={4}>{singleProduct.name}</Title>
             <Flex align="center" justify="space-between">
               <Flex align="center" justify="center">
-                <OriginalPrice>Rs.4,700.00</OriginalPrice>
-                <DiscountedPrice>Rs.2,350.00</DiscountedPrice>
+                <OriginalPrice>Rs.{singleProduct.actual_price}</OriginalPrice>
+                <DiscountedPrice>
+                  Rs.{singleProduct.discount_price}
+                </DiscountedPrice>
               </Flex>
               <Flex align="center" justify="center" gap={10}>
                 <Rate disabled defaultValue={5} count={5} />
                 <Text> 4 reviews</Text>
               </Flex>
             </Flex>
-            <Text>
-              Fabric: Fine Interlock (100% Export Export Quality polyester)
-              Feel: Breathable and Flexible Logos: Printed Logos (High Density)
-              Top: Pull-Over shirt...
-            </Text>
+            <Text>{singleProduct.description}</Text>
             <TextWrapper>
               <Text strong>SIZE:</Text>
               <SizeGuideLink>Size Guide</SizeGuideLink>
             </TextWrapper>
             <CustomRadioGroup defaultValue="S" buttonStyle="solid">
-              <Radio.Button value="S">S</Radio.Button>
-              <Radio.Button value="M">M</Radio.Button>
-              <Radio.Button value="L">L</Radio.Button>
+              {singleProduct.variants.map((item) => (
+                <>
+                  <Radio.Button value={item.size}>{item.size}</Radio.Button>
+                </>
+              ))}
             </CustomRadioGroup>
             <ButtonWrapper>
               <Space.Compact block>

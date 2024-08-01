@@ -5,14 +5,13 @@ import {
   ShoppingCartOutlined,
   UserAddOutlined,
 } from '@ant-design/icons';
-import { Badge, Drawer, Space } from 'antd';
+import { Badge, Drawer, Dropdown, Menu, Space } from 'antd';
 import { useResponsive } from 'antd-style';
 import { useRef, useState } from 'react';
-import { categories } from '../../constants';
+import { useStore } from '../../../context/Product';
 import {
   BottomContainer,
   CategoriesWrapper,
-  Dropdown,
   HeaderBottom,
   HeaderIcon,
   NavBottom,
@@ -25,11 +24,20 @@ const Header = () => {
   const breakpoints = useResponsive();
   const [open, setOpen] = useState(false);
   const [drawerContent, setDrawerContent] = useState('cart');
+  const { categories } = useStore();
 
   const toggleDrawer = (target, content) => {
     setOpen(target);
     setDrawerContent(content);
   };
+
+  const categoryMenu = (
+    <Menu>
+      {categories.map((category) => (
+        <Menu.Item key={category.id}>{category.name}</Menu.Item>
+      ))}
+    </Menu>
+  );
 
   return (
     <>
@@ -42,7 +50,7 @@ const Header = () => {
         <BottomContainer>
           <NavBottom justify="space-between">
             <Section align="center">
-              <Dropdown menu={{ items: categories }}>
+              <Dropdown overlay={categoryMenu}>
                 <CategoriesWrapper
                   type="text"
                   onClick={(e) => e.preventDefault()}

@@ -1,22 +1,58 @@
-'use client';
-import { createContext, useContext, useMemo, useState } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
 
 const ProductContext = createContext();
 
-export function ProductProvider({ children }) {
-  const [product, setProduct] = useState(null);
+export const ProductProvider = ({ children }) => {
+  const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [singleProduct, setSingleProduct] = useState(null);
 
-  const value = useMemo(
-    () => ({
-      product,
-      setProduct,
-    }),
-    [product, setProduct]
-  );
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/products`
+        );
+        const data = await response.json();
+        setProducts(data);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      }
+    };
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/categories`
+        );
+        const data = await response.json();
+        setCategories(data);
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+      }
+    };
+    fetchCategories();
+    fetchProducts();
+  }, []);
+
+  const fetchProductById = async (id) => {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/product/${id}`
+      );
+      const data = await response.json();
+      setSingleProduct(data);
+    } catch (error) {
+      console.error('Error fetching product:', error);
+    }
+  };
 
   return (
-    <ProductContext.Provider value={value}>{children}</ProductContext.Provider>
+    <ProductContext.Provider
+      value={{ products, categories, singleProduct, fetchProductById }}
+    >
+      {children}
+    </ProductContext.Provider>
   );
-}
+};
 
-export const useProduct = () => useContext(ProductContext);
+export const useStore = () => useContext(ProductContext);

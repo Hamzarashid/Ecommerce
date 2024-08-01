@@ -200,7 +200,7 @@ export const Heart = styled.div`
   }
 `;
 
-export const Description = styled.p`
+export const Title = styled.p`
   font-size: larger;
 `;
 
@@ -245,7 +245,7 @@ export const Card = styled.div`
     opacity: 1;
   }
 
-  &:hover ${Description} {
+  &:hover ${Title} {
     color: #7b0323;
   }
 

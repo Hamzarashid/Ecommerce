@@ -1,12 +1,11 @@
 'use client';
-import ProductDetail from '../../components/productdetail/ProductDetail';
+import { useParams } from 'next/navigation';
+import ProductDetails from '../../components/productdetail/ProductDetail';
 
 const ProductPage = () => {
-  return (
-    <>
-      <ProductDetail />
-    </>
-  );
+  const { id } = useParams();
+
+  return <ProductDetails id={id} />;
 };
 
 export default ProductPage;
