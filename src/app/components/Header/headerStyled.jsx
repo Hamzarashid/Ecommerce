@@ -1,4 +1,4 @@
-import { Button, Dropdown as dd, Flex } from 'antd';
+import { Button, Dropdown as dd, Flex, Input, Button as AntButton } from 'antd';
 import styled from 'styled-components';
 
 export const HeaderBottom = styled.div`
@@ -53,4 +53,20 @@ export const PopoverContent = styled(Flex)`
 export const HeaderIcon = styled(Flex)`
   padding: 14px;
   align-items: center;
+`;
+
+export const CustomButton = styled(AntButton)`
+  background: #7b0323;
+  border-color: #7b0323;
+  color: white;
+
+  &:hover {
+    background: #7b0323 !important;
+    border-color: #7b0323 !important;
+    color: white !important;
+  }
+`;
+export const CustomInput = styled(Input)`
+  width: 60px;
+  text-align: center;
 `;

@@ -5,13 +5,14 @@ import {
   ShoppingCartOutlined,
   UserAddOutlined,
 } from '@ant-design/icons';
-import { Badge, Drawer, Dropdown, Menu, Space } from 'antd';
-import { useResponsive } from 'antd-style';
+import { Badge, Drawer, Dropdown, List, Menu, Space, Typography } from 'antd';
 import { useRef, useState } from 'react';
 import { useStore } from '../../../context/Product';
 import {
   BottomContainer,
   CategoriesWrapper,
+  CustomButton,
+  CustomInput,
   HeaderBottom,
   HeaderIcon,
   NavBottom,
@@ -19,16 +20,49 @@ import {
   Section,
 } from './headerStyled';
 
+const { Text } = Typography;
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+
 const Header = () => {
   const navCenterRef = useRef(null);
-  const breakpoints = useResponsive();
-  const [open, setOpen] = useState(false);
   const [drawerContent, setDrawerContent] = useState('cart');
-  const { categories } = useStore();
+  const {
+    categories,
+    cartItems,
+    openCartDrawer,
+    closeCartDrawer,
+    drawerOpen,
+    updateCartItems,
+  } = useStore();
 
-  const toggleDrawer = (target, content) => {
-    setOpen(target);
+  const toggleDrawer = (content) => {
     setDrawerContent(content);
+    openCartDrawer();
+  };
+
+  const handleIncrease = (id, size) => {
+    const newCart = cartItems.map((item) => {
+      if (item.id === id && item.size === size) {
+        return { ...item, quantity: item.quantity + 1 };
+      }
+      return item;
+    });
+    updateCartItems(newCart);
+  };
+
+  const handleDecrease = (id, size) => {
+    const newCart = cartItems
+      .map((item) => {
+        if (item.id === id && item.size === size) {
+          if (item.quantity > 1) {
+            return { ...item, quantity: item.quantity - 1 };
+          }
+          return null;
+        }
+        return item;
+      })
+      .filter((item) => item !== null);
+    updateCartItems(newCart);
   };
 
   const categoryMenu = (
@@ -64,27 +98,74 @@ const Header = () => {
             </Section>
             <UserAddOutlined />
             <HeaderIcon gap="15px">
-              <SearchOutlined onClick={() => toggleDrawer(true, 'search')} />
+              <SearchOutlined onClick={() => toggleDrawer('search')} />
               <Badge count={3} size="small" color="#7B0323">
-                <HeartOutlined onClick={() => toggleDrawer(true, 'wishlist')} />
+                <HeartOutlined onClick={() => toggleDrawer('wishlist')} />
               </Badge>
-              <Badge count={5} size="small" color="#7B0323">
-                <ShoppingCartOutlined
-                  onClick={() => toggleDrawer(true, 'cart')}
-                />
+              <Badge count={cartItems.length} size="small" color="#7B0323">
+                <ShoppingCartOutlined onClick={() => toggleDrawer('cart')} />
               </Badge>
               <Drawer
-                title="Basic Drawer"
+                title="SHOPPING CART"
                 placement="right"
-                onClose={() => toggleDrawer(false, drawerContent)}
-                open={open}
+                onClose={closeCartDrawer}
+                open={drawerOpen}
               >
                 {drawerContent === 'cart' && (
-                  <>
-                    <p>Cart contents...</p>
-                    <p>Some contents...</p>
-                    <p>Some contents...</p>
-                  </>
+                  <List
+                    itemLayout="horizontal"
+                    dataSource={cartItems}
+                    renderItem={(item) => (
+                      <List.Item>
+                        <List.Item.Meta
+                          avatar={
+                            <img
+                              src={`${API_BASE_URL}/${item.image}`}
+                              alt={item.name}
+                              width={120}
+                              height={150}
+                            />
+                          }
+                          title={
+                            <>
+                              <Text strong>{item.name}</Text>
+                              <br />
+                              <Text type="secondary">Size: {item.size}</Text>
+                            </>
+                          }
+                          description={
+                            <>
+                              <Text strong>Rs.{item.discount_price}</Text>
+                              <br />
+                              <Space.Compact block>
+                                <CustomButton
+                                  type="primary"
+                                  onClick={() =>
+                                    handleDecrease(item.id, item.size)
+                                  }
+                                >
+                                  -
+                                </CustomButton>
+                                <CustomInput
+                                  min={1}
+                                  value={item.quantity}
+                                  readOnly
+                                />
+                                <CustomButton
+                                  type="primary"
+                                  onClick={() =>
+                                    handleIncrease(item.id, item.size)
+                                  }
+                                >
+                                  +
+                                </CustomButton>
+                              </Space.Compact>
+                            </>
+                          }
+                        />
+                      </List.Item>
+                    )}
+                  />
                 )}
                 {drawerContent === 'wishlist' && (
                   <>
@@ -93,7 +174,6 @@ const Header = () => {
                     <p>Some contents...</p>
                   </>
                 )}
-
                 {drawerContent === 'search' && (
                   <>
                     <p>Search contents...</p>

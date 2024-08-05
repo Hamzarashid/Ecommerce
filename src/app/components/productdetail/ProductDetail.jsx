@@ -1,7 +1,8 @@
 'use client';
-import { Flex, Radio, Rate, Space, Typography } from 'antd';
-import { useEffect } from 'react';
+import { Flex, Radio, Rate, Space, Typography, message } from 'antd';
+import { useEffect, useState } from 'react';
 import { useStore } from '../../../context/Product';
+import SkeletonLoader from './Loader/Skeleton';
 import {
   ButtonWrapper,
   Card,
@@ -23,20 +24,49 @@ import {
   Title,
 } from './ProductDetailStyled';
 import ProductDetailTab from './producttab/ProductDetailTab';
-import { images } from '../../constants';
 
 const { Text } = Typography;
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 const ProductDetail = ({ id }) => {
-  const { fetchProductById, singleProduct } = useStore();
-  const stock = 5;
-  const stockPercentage = (stock / 100) * 100;
+  const { fetchProductById, singleProduct, addToCart } = useStore();
+  const [selectedSize, setSelectedSize] = useState('');
+  const [quantity, setQuantity] = useState(1);
+
   useEffect(() => {
     if (id) {
       fetchProductById(id);
     }
   }, [id]);
+
+  useEffect(() => {
+    if (
+      singleProduct &&
+      singleProduct.variants &&
+      singleProduct.variants.length > 0
+    ) {
+      setSelectedSize(singleProduct.variants[0].size);
+    }
+  }, [singleProduct]);
+
+  const handleAddToCart = () => {
+    if (!selectedSize) {
+      message.warning('Please select a size.');
+      return;
+    }
+    addToCart(singleProduct, selectedSize, quantity);
+  };
+
+  if (!singleProduct) {
+    return (
+      <ParentContainer vertical>
+        <SkeletonLoader />
+      </ParentContainer>
+    );
+  }
+
+  const { name, actual_price, discount_price, description, variants, images } =
+    singleProduct;
 
   return (
     <ParentContainer vertical justify="space-around">
@@ -45,56 +75,73 @@ const ProductDetail = ({ id }) => {
           <StyledCarousel autoplay arrows dots={false}>
             {images.map((src, index) => (
               <div key={index}>
-                <CarouselImage src={src} alt={`carousel-${index}`} />
+                <CarouselImage
+                  src={`${API_BASE_URL}/${src.url}`}
+                  alt={`carousel-${index}`}
+                />
               </div>
             ))}
           </StyledCarousel>
         </ImageContainer>
         <InfoContainer>
           <Card>
-            <Text strong color="#7b0323">
-              HURRY! ONLY {stock} LEFT IN STOCK.
+            <Text strong style={{ color: '#7b0323' }}>
+              HURRY! ONLY {5} LEFT IN STOCK.
             </Text>
             <StockBar>
-              <StockIndicator stockPercentage={stockPercentage} />
+              <StockIndicator stockPercentage={5} />
             </StockBar>
-            <Title level={4}>{singleProduct.name}</Title>
+            <Title level={4}>{name}</Title>
             <Flex align="center" justify="space-between">
               <Flex align="center" justify="center">
-                <OriginalPrice>Rs.{singleProduct.actual_price}</OriginalPrice>
-                <DiscountedPrice>
-                  Rs.{singleProduct.discount_price}
-                </DiscountedPrice>
+                <OriginalPrice>Rs.{actual_price}</OriginalPrice>
+                <DiscountedPrice>Rs.{discount_price}</DiscountedPrice>
               </Flex>
               <Flex align="center" justify="center" gap={10}>
                 <Rate disabled defaultValue={5} count={5} />
                 <Text> 4 reviews</Text>
               </Flex>
             </Flex>
-            <Text>{singleProduct.description}</Text>
+            <Text>{description}</Text>
             <TextWrapper>
               <Text strong>SIZE:</Text>
               <SizeGuideLink>Size Guide</SizeGuideLink>
             </TextWrapper>
-            <CustomRadioGroup defaultValue="S" buttonStyle="solid">
-              {singleProduct.variants.map((item) => (
-                <>
-                  <Radio.Button value={item.size}>{item.size}</Radio.Button>
-                </>
+            <CustomRadioGroup
+              value={selectedSize}
+              onChange={(e) => setSelectedSize(e.target.value)}
+              buttonStyle="solid"
+            >
+              {variants.map((item) => (
+                <Radio.Button key={item.size} value={item.size}>
+                  {item.size}
+                </Radio.Button>
               ))}
             </CustomRadioGroup>
             <ButtonWrapper>
               <Space.Compact block>
-                <CustomButton type="primary">-</CustomButton>
-                <CustomInput defaultValue={1} />
-                <CustomButton type="primary">+</CustomButton>
+                <CustomButton
+                  type="primary"
+                  onClick={() => setQuantity((q) => Math.max(q - 1, 1))}
+                >
+                  -
+                </CustomButton>
+                <CustomInput
+                  value={quantity}
+                  onChange={(e) => setQuantity(parseInt(e.target.value) || 1)}
+                />
+                <CustomButton
+                  type="primary"
+                  onClick={() => setQuantity((q) => q + 1)}
+                >
+                  +
+                </CustomButton>
               </Space.Compact>
-              <CustomButton>ADD TO CART</CustomButton>
+              <CustomButton onClick={handleAddToCart}>ADD TO CART</CustomButton>
             </ButtonWrapper>
           </Card>
         </InfoContainer>
       </DetailContainer>
-      {/* Tabs */}
       <ProductDetailTab />
     </ParentContainer>
   );

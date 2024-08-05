@@ -141,7 +141,7 @@ export const Image = styled(NextImage)`
 `;
 
 export const AddToCart = styled.div`
-  scale: 0.98;
+  scale: 0.99;
   position: absolute;
   cursor: pointer;
   bottom: 0;
@@ -156,6 +156,8 @@ export const AddToCart = styled.div`
   justify-content: center;
   overflow: hidden;
   transition: scale 0.3s ease-in-out;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
   span {
     display: none;
   }

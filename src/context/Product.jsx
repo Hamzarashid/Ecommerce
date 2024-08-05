@@ -1,11 +1,13 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 
 const ProductContext = createContext();
 
 export const ProductProvider = ({ children }) => {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [singleProduct, setSingleProduct] = useState(null);
+  const [singleProduct, setSingleProduct] = useState();
+  const [cartItems, setCartItems] = useState([]);
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -19,6 +21,7 @@ export const ProductProvider = ({ children }) => {
         console.error('Error fetching products:', error);
       }
     };
+
     const fetchCategories = async () => {
       try {
         const response = await fetch(
@@ -30,8 +33,20 @@ export const ProductProvider = ({ children }) => {
         console.error('Error fetching categories:', error);
       }
     };
+
+    const loadCartItems = () => {
+      try {
+        const cart = localStorage.getItem('cart');
+        setCartItems(cart ? JSON.parse(cart) : []);
+      } catch (error) {
+        console.error('Error loading cart items from localStorage:', error);
+        setCartItems([]);
+      }
+    };
+
     fetchCategories();
     fetchProducts();
+    loadCartItems();
   }, []);
 
   const fetchProductById = async (id) => {
@@ -46,9 +61,68 @@ export const ProductProvider = ({ children }) => {
     }
   };
 
+  const updateCartItems = (newCart) => {
+    setCartItems(newCart);
+    localStorage.setItem('cart', JSON.stringify(newCart));
+  };
+
+  const openCartDrawer = () => {
+    setDrawerOpen(true);
+  };
+
+  const closeCartDrawer = () => {
+    setDrawerOpen(false);
+  };
+
+  const addToCart = (product, selectedSize, quantity) => {
+    const cart = [...cartItems];
+    const variant = product.variants.find((v) => v.size === selectedSize);
+
+    if (!variant || variant.quantity < quantity) {
+      console.error(
+        `Size ${selectedSize} not available or insufficient stock.`
+      );
+      return;
+    }
+
+    const existingProductIndex = cart.findIndex(
+      (item) => item.id === product.id && item.size === selectedSize
+    );
+
+    const imageUrl = product.images.length > 0 ? product.images[0].url : '';
+
+    if (existingProductIndex >= 0) {
+      cart[existingProductIndex].quantity += quantity;
+    } else {
+      cart.push({
+        id: product.id,
+        name: product.name,
+        size: selectedSize,
+        quantity,
+        image: imageUrl,
+        actual_price: product.actual_price,
+        discount_price: product.discount_price,
+      });
+    }
+
+    updateCartItems(cart);
+    openCartDrawer();
+  };
+
   return (
     <ProductContext.Provider
-      value={{ products, categories, singleProduct, fetchProductById }}
+      value={{
+        products,
+        categories,
+        singleProduct,
+        fetchProductById,
+        cartItems,
+        addToCart,
+        updateCartItems,
+        drawerOpen,
+        openCartDrawer,
+        closeCartDrawer,
+      }}
     >
       {children}
     </ProductContext.Provider>
