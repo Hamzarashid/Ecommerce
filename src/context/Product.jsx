@@ -66,6 +66,27 @@ export const ProductProvider = ({ children }) => {
     localStorage.setItem('cart', JSON.stringify(newCart));
   };
 
+  const checkoutCart = async () => {
+    try {
+      console.log('CSRF Token:', csrfToken);
+      await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/csrf-token`).then(
+        async (response) => {
+          const data = await response.json();
+          await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/cart`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-CSRF-TOKEN': data.csrf_token,
+            },
+            body: JSON.stringify(cartItems),
+          });
+        }
+      );
+    } catch (error) {
+      console.error('Error adding to cart:', error);
+    }
+  };
+
   const openCartDrawer = () => {
     setDrawerOpen(true);
   };
@@ -122,6 +143,7 @@ export const ProductProvider = ({ children }) => {
         drawerOpen,
         openCartDrawer,
         closeCartDrawer,
+        checkoutCart,
       }}
     >
       {children}

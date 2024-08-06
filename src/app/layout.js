@@ -10,16 +10,16 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <ProductProvider>
-          <AntdRegistry>
-            <StyledComponentsRegistry>
-              <GlobalStyle />
+        <AntdRegistry>
+          <StyledComponentsRegistry>
+            <GlobalStyle />
+            <ProductProvider>
               <Header />
               <main>{children}</main>
               <Footer />
-            </StyledComponentsRegistry>
-          </AntdRegistry>
-        </ProductProvider>
+            </ProductProvider>
+          </StyledComponentsRegistry>
+        </AntdRegistry>
       </body>
     </html>
   );

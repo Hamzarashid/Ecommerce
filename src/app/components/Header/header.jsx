@@ -5,7 +5,16 @@ import {
   ShoppingCartOutlined,
   UserAddOutlined,
 } from '@ant-design/icons';
-import { Badge, Drawer, Dropdown, List, Menu, Space, Typography } from 'antd';
+import {
+  Badge,
+  Button,
+  Drawer,
+  Dropdown,
+  List,
+  Menu,
+  Space,
+  Typography,
+} from 'antd';
 import { useRef, useState } from 'react';
 import { useStore } from '../../../context/Product';
 import {
@@ -33,6 +42,7 @@ const Header = () => {
     closeCartDrawer,
     drawerOpen,
     updateCartItems,
+    checkoutCart,
   } = useStore();
 
   const toggleDrawer = (content) => {
@@ -73,6 +83,13 @@ const Header = () => {
     </Menu>
   );
 
+  const handleCheckout = async () => {
+    try {
+      await checkoutCart();
+    } catch (error) {
+      console.error('Checkout failed:', error);
+    }
+  };
   return (
     <>
       <HeaderBottom ref={navCenterRef}>
@@ -160,6 +177,7 @@ const Header = () => {
                                   +
                                 </CustomButton>
                               </Space.Compact>
+                              <Button onClick={handleCheckout}>Checkout</Button>
                             </>
                           }
                         />

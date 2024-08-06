@@ -201,7 +201,19 @@ export const Heart = styled.div`
     color: #fff;
   }
 `;
+export const Discount = styled.div`
+  position: absolute;
+  text-align: center;
+  top: -5px;
+  left: 20px;
 
+  & p {
+    background-color: #7b0323;
+    padding: 12px 6px;
+    border-radius: 100px;
+    color: #fff;
+  }
+`;
 export const Title = styled.p`
   font-size: larger;
 `;
@@ -288,5 +300,6 @@ export const Price = styled.h4`
   margin: 0;
   & span {
     margin-right: 10px;
+    color: #888;
   }
 `;

@@ -1,6 +1,6 @@
 'use client';
 import { EyeOutlined, HeartFilled } from '@ant-design/icons';
-import { Flex, Skeleton } from 'antd';
+import { Flex, Modal, Skeleton } from 'antd';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useStore } from '../../../context/Product';
@@ -10,12 +10,14 @@ import {
   Card,
   CardInner,
   CardsContainer,
+  Discount,
   Heart,
   Image,
   InnerNested,
   Price,
   Title,
 } from './CardsStyles';
+import ProductDetail from '../productdetail/ProductDetail';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -23,6 +25,8 @@ function Cards() {
   const router = useRouter();
   const { products } = useStore();
   const [loading, setLoading] = useState(true);
+  const [hideTabs, setHideTabs] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const sameCaregoryProducts = products.reduce((acc, prod) => {
     if (!acc[prod.category]) {
@@ -56,6 +60,16 @@ function Cards() {
     router.push(`/product/${product.id}`);
   };
 
+  const showModal = () => {
+    setHideTabs(true);
+    setIsModalVisible(true);
+  };
+
+  const handleCancel = () => {
+    setHideTabs(false);
+    setIsModalVisible(false);
+  };
+
   return (
     <>
       {Object.keys(sameCaregoryProducts).length === 0 && loading
@@ -76,16 +90,18 @@ function Cards() {
                         src={`${API_BASE_URL}/${prod.images[0].url}`}
                         alt={`Product image`}
                       />
-
                       <Heart>
                         <HeartFilled />
                       </Heart>
+                      <Discount>
+                        <p>40%</p>
+                      </Discount>
                       <AddToCart
                         onClick={(e) => {
                           e.stopPropagation();
                         }}
                       >
-                        <p>Add to Cart</p> <EyeOutlined />
+                        <p>Add to Cart</p> <EyeOutlined onClick={showModal} />
                       </AddToCart>
                     </InnerNested>
                     <CardInner vertical justify={'center'} align={'center'}>
@@ -102,6 +118,14 @@ function Cards() {
               </CardsContainer>
             </div>
           ))}
+      <Modal
+        visible={isModalVisible}
+        onCancel={handleCancel}
+        footer={null}
+        width={1000}
+      >
+        <ProductDetail hideTabs={hideTabs} />
+      </Modal>
     </>
   );
 }

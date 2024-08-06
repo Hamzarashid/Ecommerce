@@ -28,8 +28,8 @@ import ProductDetailTab from './producttab/ProductDetailTab';
 const { Text } = Typography;
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-const ProductDetail = ({ id }) => {
-  const { fetchProductById, singleProduct, addToCart } = useStore();
+const ProductDetail = ({ id, hideTabs }) => {
+  const { fetchProductById, singleProduct, addToCart, csrfToken } = useStore();
   const [selectedSize, setSelectedSize] = useState('');
   const [quantity, setQuantity] = useState(1);
 
@@ -142,7 +142,7 @@ const ProductDetail = ({ id }) => {
           </Card>
         </InfoContainer>
       </DetailContainer>
-      <ProductDetailTab />
+      {!hideTabs && <ProductDetailTab />}
     </ParentContainer>
   );
 };
