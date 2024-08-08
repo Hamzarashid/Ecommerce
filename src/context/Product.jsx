@@ -68,19 +68,20 @@ export const ProductProvider = ({ children }) => {
 
   const checkoutCart = async () => {
     try {
-      await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/csrf-token`).then(
-        async (response) => {
-          const data = await response.json();
-          await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/cart`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "X-CSRF-TOKEN": data.csrf_token,
-            },
-            body: JSON.stringify(cartItems),
-          });
-        }
-      );
+      await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/csrf-token`, {
+        credentials: "include",
+      }).then(async (response) => {
+        const data = await response.json();
+        await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/cart`, {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": data.csrf_token,
+          },
+          body: JSON.stringify(cartItems),
+        });
+      });
     } catch (error) {
       console.error("Error adding to cart:", error);
     }
