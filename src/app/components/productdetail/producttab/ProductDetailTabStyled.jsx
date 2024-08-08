@@ -1,7 +1,5 @@
-// Product Detail Tabs
-
-import { Button as AntButton, Flex, Progress, Tabs } from 'antd';
-import styled from 'styled-components';
+import { Button as AntButton, Flex, Progress, Tabs } from "antd";
+import styled from "styled-components";
 const { TabPane } = Tabs;
 
 export const DescriptionContainer = styled.div`

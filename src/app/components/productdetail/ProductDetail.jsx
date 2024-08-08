@@ -1,8 +1,9 @@
-'use client';
-import { Flex, Radio, Rate, Space, Typography, message } from 'antd';
-import { useEffect, useState } from 'react';
-import { useStore } from '../../../context/Product';
-import SkeletonLoader from './Loader/Skeleton';
+"use client";
+import { Flex, Radio, Rate, Space, Typography, message } from "antd";
+import { useEffect, useState } from "react";
+import { useStore } from "../../../context/Product";
+import { Price } from "../../globalsStyled";
+import SkeletonLoader from "./Loader/Skeleton";
 import {
   ButtonWrapper,
   Card,
@@ -11,10 +12,8 @@ import {
   CustomInput,
   CustomRadioGroup,
   DetailContainer,
-  DiscountedPrice,
   ImageContainer,
   InfoContainer,
-  OriginalPrice,
   ParentContainer,
   SizeGuideLink,
   StockBar,
@@ -22,15 +21,15 @@ import {
   StyledCarousel,
   TextWrapper,
   Title,
-} from './ProductDetailStyled';
-import ProductDetailTab from './producttab/ProductDetailTab';
+} from "./ProductDetailStyled";
+import ProductDetailTab from "./producttab/ProductDetailTab";
 
 const { Text } = Typography;
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 const ProductDetail = ({ id, hideTabs }) => {
   const { fetchProductById, singleProduct, addToCart, csrfToken } = useStore();
-  const [selectedSize, setSelectedSize] = useState('');
+  const [selectedSize, setSelectedSize] = useState("");
   const [quantity, setQuantity] = useState(1);
 
   useEffect(() => {
@@ -51,7 +50,7 @@ const ProductDetail = ({ id, hideTabs }) => {
 
   const handleAddToCart = () => {
     if (!selectedSize) {
-      message.warning('Please select a size.');
+      message.warning("Please select a size.");
       return;
     }
     addToCart(singleProduct, selectedSize, quantity);
@@ -85,7 +84,7 @@ const ProductDetail = ({ id, hideTabs }) => {
         </ImageContainer>
         <InfoContainer>
           <Card>
-            <Text strong style={{ color: '#7b0323' }}>
+            <Text strong style={{ color: "#7b0323" }}>
               HURRY! ONLY {5} LEFT IN STOCK.
             </Text>
             <StockBar>
@@ -94,9 +93,18 @@ const ProductDetail = ({ id, hideTabs }) => {
             <Title level={4}>{name}</Title>
             <Flex align="center" justify="space-between">
               <Flex align="center" justify="center">
-                <OriginalPrice>Rs.{actual_price}</OriginalPrice>
-                <DiscountedPrice>Rs.{discount_price}</DiscountedPrice>
+                {discount_price ? (
+                  <Price>
+                    <span>
+                      <del>Rs.{actual_price}</del>
+                    </span>
+                    <>Rs.{discount_price}</>
+                  </Price>
+                ) : (
+                  <>Rs.{actual_price}</>
+                )}
               </Flex>
+
               <Flex align="center" justify="center" gap={10}>
                 <Rate disabled defaultValue={5} count={5} />
                 <Text> 4 reviews</Text>

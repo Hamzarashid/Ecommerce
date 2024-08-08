@@ -24,7 +24,7 @@ const Album = () => {
           ))}
         </Col>
 
-        <Col span={6}>
+        <Col span={4}>
           {column2.map((item, index) => (
             <InnerContainer key={index}>
               <img
@@ -37,13 +37,13 @@ const Album = () => {
           ))}
         </Col>
 
-        <Col span={6}>
+        <Col span={8}>
           {column3.map((item, index) => (
             <InnerContainer key={index}>
               <img
                 alt={item.title}
                 src={item.image}
-                style={{ width: '100%', height: '100%' }}
+                style={{ width: '100%', height: '630px' }}
               />
               <OverlayButton>Button</OverlayButton>
             </InnerContainer>

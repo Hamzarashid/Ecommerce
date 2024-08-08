@@ -1,6 +1,6 @@
-'use client';
-import { Divider, Flex, List, Rate, Table, Tabs, Typography } from 'antd';
-import { tabreviews } from '../../../constants';
+"use client";
+import { Divider, Flex, List, Rate, Table, Tabs, Typography } from "antd";
+import { tabreviews } from "../../../constants";
 import {
   CustomButton,
   CustomProgress,
@@ -12,7 +12,7 @@ import {
   ReviewListContainer,
   ReviewStats,
   ReviewSummary,
-} from './ProductDetailTabStyled';
+} from "./ProductDetailTabStyled";
 
 const { Text, Title } = Typography;
 const { TabPane } = Tabs;

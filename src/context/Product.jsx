@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from "react";
 
 const ProductContext = createContext();
 
@@ -18,7 +18,7 @@ export const ProductProvider = ({ children }) => {
         const data = await response.json();
         setProducts(data);
       } catch (error) {
-        console.error('Error fetching products:', error);
+        console.error("Error fetching products:", error);
       }
     };
 
@@ -30,16 +30,16 @@ export const ProductProvider = ({ children }) => {
         const data = await response.json();
         setCategories(data);
       } catch (error) {
-        console.error('Error fetching categories:', error);
+        console.error("Error fetching categories:", error);
       }
     };
 
     const loadCartItems = () => {
       try {
-        const cart = localStorage.getItem('cart');
+        const cart = localStorage.getItem("cart");
         setCartItems(cart ? JSON.parse(cart) : []);
       } catch (error) {
-        console.error('Error loading cart items from localStorage:', error);
+        console.error("Error loading cart items from localStorage:", error);
         setCartItems([]);
       }
     };
@@ -57,33 +57,32 @@ export const ProductProvider = ({ children }) => {
       const data = await response.json();
       setSingleProduct(data);
     } catch (error) {
-      console.error('Error fetching product:', error);
+      console.error("Error fetching product:", error);
     }
   };
 
   const updateCartItems = (newCart) => {
     setCartItems(newCart);
-    localStorage.setItem('cart', JSON.stringify(newCart));
+    localStorage.setItem("cart", JSON.stringify(newCart));
   };
 
   const checkoutCart = async () => {
     try {
-      console.log('CSRF Token:', csrfToken);
       await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/csrf-token`).then(
         async (response) => {
           const data = await response.json();
           await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/cart`, {
-            method: 'POST',
+            method: "POST",
             headers: {
-              'Content-Type': 'application/json',
-              'X-CSRF-TOKEN': data.csrf_token,
+              "Content-Type": "application/json",
+              "X-CSRF-TOKEN": data.csrf_token,
             },
             body: JSON.stringify(cartItems),
           });
         }
       );
     } catch (error) {
-      console.error('Error adding to cart:', error);
+      console.error("Error adding to cart:", error);
     }
   };
 
@@ -110,7 +109,7 @@ export const ProductProvider = ({ children }) => {
       (item) => item.id === product.id && item.size === selectedSize
     );
 
-    const imageUrl = product.images.length > 0 ? product.images[0].url : '';
+    const imageUrl = product.images.length > 0 ? product.images[0].url : "";
 
     if (existingProductIndex >= 0) {
       cart[existingProductIndex].quantity += quantity;

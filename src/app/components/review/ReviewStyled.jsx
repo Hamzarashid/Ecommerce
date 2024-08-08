@@ -25,7 +25,7 @@ export const ReviewsContainer = styled.div`
   }
 `;
 
-export const ReviewsTitleContainer = styled.h2`
+export const ReviewsTitleContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;

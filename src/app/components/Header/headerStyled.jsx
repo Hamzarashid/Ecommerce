@@ -1,5 +1,5 @@
-import { Button, Dropdown as dd, Flex, Input, Button as AntButton } from 'antd';
-import styled from 'styled-components';
+import { Button, Dropdown as dd, Flex, Input, Button as AntButton } from "antd";
+import styled from "styled-components";
 
 export const HeaderBottom = styled.div`
   top: 0;
@@ -14,11 +14,11 @@ export const BottomContainer = styled.div`
 `;
 
 export const NavTop = styled(Flex)`
-  padding: '5px 70px';
+  padding: "5px 70px";
 `;
 
 export const NavCenter = styled(Flex)`
-  padding: '20px 70px';
+  padding: "20px 70px";
 `;
 
 export const Section = styled(Flex)`

@@ -16,8 +16,8 @@ export default function RootLayout({ children }) {
             <ProductProvider>
               <Header />
               <main>{children}</main>
-              <Footer />
             </ProductProvider>
+              <Footer />
           </StyledComponentsRegistry>
         </AntdRegistry>
       </body>

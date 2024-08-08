@@ -294,6 +294,7 @@ export const InnerNested = styled.div`
   align-items: center;
   justify-content: center;
   width: 100%;
+  
 `;
 
 export const Price = styled.h4`

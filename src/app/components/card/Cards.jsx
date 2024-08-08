@@ -1,10 +1,12 @@
-'use client';
-import { EyeOutlined, HeartFilled } from '@ant-design/icons';
-import { Flex, Modal, Skeleton } from 'antd';
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import { useStore } from '../../../context/Product';
-import HeaderText from '../HeaderText/HeaderText';
+"use client";
+import { EyeOutlined, HeartFilled } from "@ant-design/icons";
+import { Flex, Modal, Skeleton } from "antd";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useStore } from "../../../context/Product";
+import { Price } from "../../globalsStyled";
+import HeaderText from "../HeaderText/HeaderText";
+import ProductDetail from "../productdetail/ProductDetail";
 import {
   AddToCart,
   Card,
@@ -14,10 +16,8 @@ import {
   Heart,
   Image,
   InnerNested,
-  Price,
   Title,
-} from './CardsStyles';
-import ProductDetail from '../productdetail/ProductDetail';
+} from "./CardsStyles";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -48,7 +48,7 @@ function Cards() {
       <CardsContainer>
         {[...Array(4).keys()].map((index) => (
           <Card key={index}>
-            <Skeleton.Image active style={{ width: '350px', height: 200 }} />
+            <Skeleton.Image active style={{ width: "350px", height: 200 }} />
             <Skeleton active />
           </Card>
         ))}
@@ -85,7 +85,7 @@ function Cards() {
                   <Card key={prod.id} onClick={() => handleCardClick(prod)}>
                     <InnerNested>
                       <Image
-                        width={350}
+                        width={500}
                         height={200}
                         src={`${API_BASE_URL}/${prod.images[0].url}`}
                         alt={`Product image`}
@@ -99,18 +99,25 @@ function Cards() {
                       <AddToCart
                         onClick={(e) => {
                           e.stopPropagation();
+                          showModal();
                         }}
                       >
-                        <p>Add to Cart</p> <EyeOutlined onClick={showModal} />
+                        <p>Add to Cart</p> <EyeOutlined />
                       </AddToCart>
                     </InnerNested>
-                    <CardInner vertical justify={'center'} align={'center'}>
+                    <CardInner vertical justify={"center"} align={"center"}>
                       <Title>{prod.name}</Title>
                       <Price>
-                        <span>
-                          <del>Rs.{prod.actual_price}</del>
-                        </span>
-                        Rs.{prod.discount_price}
+                        {prod.discount_price ? (
+                          <>
+                            <span>
+                              <del>Rs.{prod.actual_price}</del>
+                            </span>
+                            Rs.{prod.discount_price}
+                          </>
+                        ) : (
+                          <>Rs.{prod.actual_price}</>
+                        )}
                       </Price>
                     </CardInner>
                   </Card>
@@ -119,7 +126,7 @@ function Cards() {
             </div>
           ))}
       <Modal
-        visible={isModalVisible}
+        open={isModalVisible}
         onCancel={handleCancel}
         footer={null}
         width={1000}

@@ -4,75 +4,33 @@ import {
   SearchOutlined,
   ShoppingCartOutlined,
   UserAddOutlined,
-} from '@ant-design/icons';
-import {
-  Badge,
-  Button,
-  Drawer,
-  Dropdown,
-  List,
-  Menu,
-  Space,
-  Typography,
-} from 'antd';
-import { useRef, useState } from 'react';
-import { useStore } from '../../../context/Product';
+} from "@ant-design/icons";
+import { Badge, Button, Drawer, Dropdown, Menu, Space, Typography } from "antd";
+import { useRef, useState } from "react";
+import { useStore } from "../../../context/Product";
 import {
   BottomContainer,
   CategoriesWrapper,
-  CustomButton,
-  CustomInput,
   HeaderBottom,
   HeaderIcon,
   NavBottom,
   NavCenter,
   Section,
-} from './headerStyled';
+} from "./headerStyled";
+import SearchDrawer from "./Drawer/SearchDrawer";
+import CartDrawer from "./Drawer/CartDrawer";
 
 const { Text } = Typography;
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 const Header = () => {
   const navCenterRef = useRef(null);
-  const [drawerContent, setDrawerContent] = useState('cart');
-  const {
-    categories,
-    cartItems,
-    openCartDrawer,
-    closeCartDrawer,
-    drawerOpen,
-    updateCartItems,
-    checkoutCart,
-  } = useStore();
+  const [drawerContent, setDrawerContent] = useState("cart");
+  const { categories, cartItems, openCartDrawer, closeCartDrawer, drawerOpen } =
+    useStore();
 
   const toggleDrawer = (content) => {
     setDrawerContent(content);
     openCartDrawer();
-  };
-
-  const handleIncrease = (id, size) => {
-    const newCart = cartItems.map((item) => {
-      if (item.id === id && item.size === size) {
-        return { ...item, quantity: item.quantity + 1 };
-      }
-      return item;
-    });
-    updateCartItems(newCart);
-  };
-
-  const handleDecrease = (id, size) => {
-    const newCart = cartItems
-      .map((item) => {
-        if (item.id === id && item.size === size) {
-          if (item.quantity > 1) {
-            return { ...item, quantity: item.quantity - 1 };
-          }
-          return null;
-        }
-        return item;
-      })
-      .filter((item) => item !== null);
-    updateCartItems(newCart);
   };
 
   const categoryMenu = (
@@ -83,13 +41,19 @@ const Header = () => {
     </Menu>
   );
 
-  const handleCheckout = async () => {
-    try {
-      await checkoutCart();
-    } catch (error) {
-      console.error('Checkout failed:', error);
+  const getDrawerTitle = () => {
+    switch (drawerContent) {
+      case "cart":
+        return "SHOPPING CART";
+      case "wishlist":
+        return "WISHLIST";
+      case "search":
+        return "SEARCH PRODUCTS";
+      default:
+        return "";
     }
   };
+
   return (
     <>
       <HeaderBottom ref={navCenterRef}>
@@ -115,90 +79,23 @@ const Header = () => {
             </Section>
             <UserAddOutlined />
             <HeaderIcon gap="15px">
-              <SearchOutlined onClick={() => toggleDrawer('search')} />
+              <SearchOutlined onClick={() => toggleDrawer("search")} />
               <Badge count={3} size="small" color="#7B0323">
-                <HeartOutlined onClick={() => toggleDrawer('wishlist')} />
+                <HeartOutlined onClick={() => toggleDrawer("wishlist")} />
               </Badge>
               <Badge count={cartItems.length} size="small" color="#7B0323">
-                <ShoppingCartOutlined onClick={() => toggleDrawer('cart')} />
+                <ShoppingCartOutlined onClick={() => toggleDrawer("cart")} />
               </Badge>
+
               <Drawer
-                title="SHOPPING CART"
+                title={getDrawerTitle()}
                 placement="right"
                 onClose={closeCartDrawer}
                 open={drawerOpen}
               >
-                {drawerContent === 'cart' && (
-                  <List
-                    itemLayout="horizontal"
-                    dataSource={cartItems}
-                    renderItem={(item) => (
-                      <List.Item>
-                        <List.Item.Meta
-                          avatar={
-                            <img
-                              src={`${API_BASE_URL}/${item.image}`}
-                              alt={item.name}
-                              width={120}
-                              height={150}
-                            />
-                          }
-                          title={
-                            <>
-                              <Text strong>{item.name}</Text>
-                              <br />
-                              <Text type="secondary">Size: {item.size}</Text>
-                            </>
-                          }
-                          description={
-                            <>
-                              <Text strong>Rs.{item.discount_price}</Text>
-                              <br />
-                              <Space.Compact block>
-                                <CustomButton
-                                  type="primary"
-                                  onClick={() =>
-                                    handleDecrease(item.id, item.size)
-                                  }
-                                >
-                                  -
-                                </CustomButton>
-                                <CustomInput
-                                  min={1}
-                                  value={item.quantity}
-                                  readOnly
-                                />
-                                <CustomButton
-                                  type="primary"
-                                  onClick={() =>
-                                    handleIncrease(item.id, item.size)
-                                  }
-                                >
-                                  +
-                                </CustomButton>
-                              </Space.Compact>
-                              <Button onClick={handleCheckout}>Checkout</Button>
-                            </>
-                          }
-                        />
-                      </List.Item>
-                    )}
-                  />
-                )}
-                {drawerContent === 'wishlist' && (
-                  <>
-                    <p>Wishlist contents...</p>
-                    <p>Some contents...</p>
-                    <p>Some contents...</p>
-                  </>
-                )}
-                {drawerContent === 'search' && (
-                  <>
-                    <p>Search contents...</p>
-                    <p>Some contents...</p>
-                    <p>Some contents...</p>
-                  </>
-                )}
+                {drawerContent === "search" && <SearchDrawer />}
+                {drawerContent === "cart" && <CartDrawer />}
+                {drawerContent === "wishlist" && <p>Wishlist contents...</p>}
               </Drawer>
             </HeaderIcon>
           </NavBottom>

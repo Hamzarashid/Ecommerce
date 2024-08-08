@@ -15,6 +15,7 @@ export const InnerContainer = styled.div`
     height: 100%;
     transition: transform 1s ease;
     border-radius: 5px;
+    object-fit: fit;
   }
 
   &:hover img {

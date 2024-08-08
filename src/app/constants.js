@@ -8,6 +8,39 @@ export const categories = [
   { key: '6', label: 'Track Suits' },
   { key: '7', label: 'Denim Jeans' },
 ];
+
+// Carousel Images
+
+export const carouselImages = [
+  {
+    src: 'https://era4apparels.com/cdn/shop/files/chino-banner-2.jpg?v=1712219764&width=1400',
+    alt: 'Image 1',
+  },
+  {
+    src: 'https://era4apparels.com/cdn/shop/files/dri-fit-1.jpg?v=1712219806&width=1400',
+    alt: 'Image 2',
+  },
+  {
+    src: 'https://era4apparels.com/cdn/shop/files/era4-new-bnr-new.jpg?v=1713178010&width=1400',
+    alt: 'Image 3',
+  },
+  {
+    src: 'https://era4apparels.com/cdn/shop/files/polo-1.jpg?v=1712219716&width=1400',
+    alt: 'Image 4',
+  }, 
+   {
+    src: 'https://era4apparels.com/cdn/shop/files/polo-banner.png?v=1719995892&width=1400',
+    alt: 'Image 5',
+  },
+  {
+    src: 'https://era4apparels.com/cdn/shop/files/az.png?v=1722354503&width=1400',
+    alt: 'Image 5',
+  },
+    {
+    src: 'https://era4apparels.com/cdn/shop/files/12.png?v=1722353689&width=1400',
+    alt: 'Image 6',
+  },
+];
 // Card Data
 export const cardData = [
   {
@@ -40,19 +73,19 @@ export const cardData = [
 export const items = [
   {
     title: 'Polo Shirts',
-    image: 'https://picsum.photos/800/500?random=1',
+    image: 'https://era4apparels.com/cdn/shop/files/polo-bnr-new.png?v=1718981930&width=700',
   },
   {
     title: 'Dri-Fits',
-    image: 'https://picsum.photos/800/500?random=2',
+    image: 'https://era4apparels.com/cdn/shop/files/C9077T01.jpg?v=1715290003&width=400',
   },
   {
     title: 'Track Suits',
-    image: 'https://picsum.photos/800/500?random=3',
+    image: 'https://era4apparels.com/cdn/shop/files/PLM04591.jpg?v=1712563249&width=400',
   },
   {
     title: 'Chinos Pants',
-    image: 'https://picsum.photos/800/500?random=1',
+    image: 'https://era4apparels.com/cdn/shop/files/chinos-bnr-men.jpg?v=1718285368&width=600',
   },
 ];
 

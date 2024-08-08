@@ -1,17 +1,16 @@
 import {
   Button as AntButton,
   Carousel,
-  Drawer,
   Flex,
   Input,
   Radio,
   Typography,
-} from 'antd';
-import styled, { keyframes } from 'styled-components';
+} from "antd";
+import styled, { keyframes } from "styled-components";
 
 const breakpoints = {
-  mobile: '768px',
-  tablet: '1024px',
+  mobile: "768px",
+  tablet: "1024px",
 };
 
 export const ParentContainer = styled(Flex)`
@@ -44,7 +43,7 @@ export const ImageContainer = styled.div`
     padding: 20px;
 
     &:after {
-      content: '';
+      content: "";
       display: inline-block;
       width: 20px;
       height: 20px;
@@ -135,22 +134,6 @@ export const StockIndicator = styled.div`
   height: 100%;
   width: ${(props) => props.stockPercentage}%;
   position: absolute;
-`;
-
-export const OriginalPrice = styled.span`
-  text-decoration: line-through;
-  margin-right: 8px;
-  color: #888;
-`;
-
-export const DiscountedPrice = styled.span`
-  color: #7b0323;
-  font-size: 20px;
-  font-weight: bold;
-
-  @media (max-width: ${breakpoints.mobile}) {
-    font-size: 16px;
-  }
 `;
 
 export const SizeGuideLink = styled.a`
