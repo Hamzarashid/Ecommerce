@@ -1,6 +1,6 @@
-import { Flex } from 'antd';
-import NextImage from 'next/image';
-import styled, { keyframes } from 'styled-components';
+import { Flex } from "antd";
+import NextImage from "next/image";
+import styled, { keyframes } from "styled-components";
 
 const fadeIn = keyframes`
     from {
@@ -135,9 +135,9 @@ export const Image = styled(NextImage)`
   border-radius: 10px;
   scale: 0.9;
   transition: scale 0.3s ease-in-out;
-  object-fit: cover;
-  width: ${(props) => props.width || 'auto'};
-  height: ${(props) => props.height || 'auto'};
+  object-fit: fill;
+  width: ${(props) => props.width || "auto"};
+  height: ${(props) => props.height || "auto"};
 `;
 
 export const AddToCart = styled.div`
@@ -192,13 +192,10 @@ export const Heart = styled.div`
   top: 4px;
   right: 7.5px;
   z-index: 1000;
-  background-color: #fff;
-  color: #828787;
+  color: #7b0323;
   transition: width 0.3s, font-size 0.3s, opacity 0.3s;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-  &:hover {
-    background-color: #7b0323;
-    color: #fff;
+  & HeartFilled {
+    color: "#7B0323";
   }
 `;
 export const Discount = styled.div`
@@ -215,28 +212,29 @@ export const Discount = styled.div`
   }
 `;
 export const Title = styled.p`
-  font-size: larger;
+  display: inline;
+  font-size: 14px;
+  text-align: center;
+  line-height: 20px;
+  font-weight: 500;
 `;
 
 export const Card = styled.div`
   flex: 1 1 calc(${(props) => 100 / props.cardsToShow}% - 16px);
-  margin: 2px;
   padding: 0 0 16px 0;
   position: relative;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 8px;
   border-radius: 10px;
   background: #fff;
   cursor: pointer;
+  width: min-content;
   &:hover::before {
-    border: 2px solid #7b0323;
-    border-radius: 10px;
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    border-width: 1px;
     box-sizing: border-box;
     animation: ${drawBorder} 0.9s forwards;
   }
@@ -286,6 +284,7 @@ export const Card = styled.div`
 
 export const CardInner = styled(Flex)`
   position: relative;
+  padding: 0 15px 0 15px;
 `;
 
 export const InnerNested = styled.div`
@@ -294,7 +293,6 @@ export const InnerNested = styled.div`
   align-items: center;
   justify-content: center;
   width: 100%;
-  
 `;
 
 export const Price = styled.h4`

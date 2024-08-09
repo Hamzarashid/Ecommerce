@@ -1,7 +1,7 @@
-'use client';
-import { Col, Row } from 'antd';
-import { items } from '../../constants';
-import { Container, InnerContainer, OverlayButton } from './AlbumStyled';
+"use client";
+import { Col, Row } from "antd";
+import { items } from "../../constants";
+import { Container, InnerContainer, OverlayButton } from "./AlbumStyled";
 
 const Album = () => {
   const column1 = items.slice(0, 1);
@@ -10,40 +10,36 @@ const Album = () => {
 
   return (
     <Container>
-      <Row gutter={16} justify="center">
-        <Col span={12}>
+      <Row gutter={20} justify="center">
+        <Col xs={24} sm={24} lg={9}>
           {column1.map((item, index) => (
             <InnerContainer key={index}>
               <img
                 alt={item.title}
                 src={item.image}
-                style={{ width: '100%', height: '100%' }}
+                style={{ width: "100%", height: "100%" }}
               />
               <OverlayButton>Button</OverlayButton>
             </InnerContainer>
           ))}
         </Col>
 
-        <Col span={4}>
+        <Col xs={7} sm={7} lg={4}>
           {column2.map((item, index) => (
             <InnerContainer key={index}>
-              <img
-                alt={item.title}
-                src={item.image}
-                style={{ width: '100%', height: '50%' }}
-              />
+              <img alt={item.title} src={item.image} />
               <OverlayButton>Button</OverlayButton>
             </InnerContainer>
           ))}
         </Col>
 
-        <Col span={8}>
+        <Col xs={16} sm={16} lg={9}>
           {column3.map((item, index) => (
             <InnerContainer key={index}>
               <img
                 alt={item.title}
                 src={item.image}
-                style={{ width: '100%', height: '630px' }}
+                style={{ width: "100%", height: "100%" }}
               />
               <OverlayButton>Button</OverlayButton>
             </InnerContainer>

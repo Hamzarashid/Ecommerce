@@ -7,9 +7,17 @@ export const ProductProvider = ({ children }) => {
   const [categories, setCategories] = useState([]);
   const [singleProduct, setSingleProduct] = useState();
   const [cartItems, setCartItems] = useState([]);
+  const [wishlistItems, setWishlistItems] = useState([]);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const openCartDrawer = () => {
+    setDrawerOpen(true);
+  };
+  const closeCartDrawer = () => {
+    setDrawerOpen(false);
+  };
 
   useEffect(() => {
+    // Fetch All Products
     const fetchProducts = async () => {
       try {
         const response = await fetch(
@@ -21,7 +29,7 @@ export const ProductProvider = ({ children }) => {
         console.error("Error fetching products:", error);
       }
     };
-
+    // Fetch All categories
     const fetchCategories = async () => {
       try {
         const response = await fetch(
@@ -33,7 +41,7 @@ export const ProductProvider = ({ children }) => {
         console.error("Error fetching categories:", error);
       }
     };
-
+    // Fetch all data of AddToCart Data form local storage
     const loadCartItems = () => {
       try {
         const cart = localStorage.getItem("cart");
@@ -43,12 +51,24 @@ export const ProductProvider = ({ children }) => {
         setCartItems([]);
       }
     };
+    // Fetch  all data of WishList Data form local storage
+    const loadWishlistItems = () => {
+      try {
+        const wishlist = localStorage.getItem("wishlist");
+        setWishlistItems(wishlist ? JSON.parse(wishlist) : []);
+      } catch (error) {
+        console.error("Error loading wishlist items from localStorage:", error);
+        setWishlistItems([]);
+      }
+    };
 
     fetchCategories();
     fetchProducts();
     loadCartItems();
+    loadWishlistItems();
   }, []);
 
+  // Fetach Single Product From id
   const fetchProductById = async (id) => {
     try {
       const response = await fetch(
@@ -61,11 +81,19 @@ export const ProductProvider = ({ children }) => {
     }
   };
 
+  // Update Cart items in Local Storage
   const updateCartItems = (newCart) => {
     setCartItems(newCart);
     localStorage.setItem("cart", JSON.stringify(newCart));
   };
 
+  // Update Wishlist items in Local Storage
+  const updateWishlistItems = (newWishlist) => {
+    setWishlistItems(newWishlist);
+    localStorage.setItem("wishlist", JSON.stringify(newWishlist));
+  };
+
+  // Check Out Api
   const checkoutCart = async () => {
     try {
       await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/csrf-token`, {
@@ -87,17 +115,11 @@ export const ProductProvider = ({ children }) => {
     }
   };
 
-  const openCartDrawer = () => {
-    setDrawerOpen(true);
-  };
-
-  const closeCartDrawer = () => {
-    setDrawerOpen(false);
-  };
-
+  // AddToCard in LocalStorage
   const addToCart = (product, selectedSize, quantity) => {
     const cart = [...cartItems];
     const variant = product.variants.find((v) => v.size === selectedSize);
+    const imageUrl = product.images.length > 0 ? product.images[0].url : "";
 
     if (!variant || variant.quantity < quantity) {
       console.error(
@@ -109,8 +131,6 @@ export const ProductProvider = ({ children }) => {
     const existingProductIndex = cart.findIndex(
       (item) => item.id === product.id && item.size === selectedSize
     );
-
-    const imageUrl = product.images.length > 0 ? product.images[0].url : "";
 
     if (existingProductIndex >= 0) {
       cart[existingProductIndex].quantity += quantity;
@@ -125,9 +145,33 @@ export const ProductProvider = ({ children }) => {
         discount_price: product.discount_price,
       });
     }
-
     updateCartItems(cart);
     openCartDrawer();
+  };
+
+  // AddToWishlist in LocalStorage
+  const addToWishlist = (product) => {
+    const wishlist = [...wishlistItems];
+
+    if (!wishlist.find((item) => item.id === product.id)) {
+      wishlist.push({
+        id: product.id,
+        name: product.name,
+        image: product.images.length > 0 ? product.images[0].url : "",
+        actual_price: product.actual_price,
+        discount_price: product.discount_price,
+      });
+
+      updateWishlistItems(wishlist);
+    }
+  };
+
+  // Remove From wishList
+  const removeFromWishlist = (productId) => {
+    const updatedWishlist = wishlistItems.filter(
+      (item) => item.id !== productId
+    );
+    updateWishlistItems(updatedWishlist);
   };
 
   return (
@@ -144,6 +188,9 @@ export const ProductProvider = ({ children }) => {
         openCartDrawer,
         closeCartDrawer,
         checkoutCart,
+        wishlistItems,
+        addToWishlist,
+        removeFromWishlist,
       }}
     >
       {children}

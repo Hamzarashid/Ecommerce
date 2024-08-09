@@ -5,7 +5,7 @@ import {
   ShoppingCartOutlined,
   UserAddOutlined,
 } from "@ant-design/icons";
-import { Badge, Button, Drawer, Dropdown, Menu, Space, Typography } from "antd";
+import { Badge, Drawer, Dropdown, Menu, Space, Typography } from "antd";
 import { useRef, useState } from "react";
 import { useStore } from "../../../context/Product";
 import {
@@ -19,14 +19,21 @@ import {
 } from "./headerStyled";
 import SearchDrawer from "./Drawer/SearchDrawer";
 import CartDrawer from "./Drawer/CartDrawer";
+import WishlistDrawer from "./Drawer/WishlistDrawer";
 
 const { Text } = Typography;
 
 const Header = () => {
   const navCenterRef = useRef(null);
   const [drawerContent, setDrawerContent] = useState("cart");
-  const { categories, cartItems, openCartDrawer, closeCartDrawer, drawerOpen } =
-    useStore();
+  const {
+    categories,
+    cartItems,
+    wishlistItems,
+    openCartDrawer,
+    closeCartDrawer,
+    drawerOpen,
+  } = useStore();
 
   const toggleDrawer = (content) => {
     setDrawerContent(content);
@@ -54,14 +61,22 @@ const Header = () => {
     }
   };
 
+  const DrawerContent = ({ drawerContent }) => {
+    switch (drawerContent) {
+      case "search":
+        return <SearchDrawer />;
+      case "cart":
+        return <CartDrawer />;
+      case "wishlist":
+        return <WishlistDrawer />;
+      default:
+        return null;
+    }
+  };
   return (
     <>
       <HeaderBottom ref={navCenterRef}>
-        <NavCenter
-          align="center"
-          justify="space-between"
-          gap="50px"
-        ></NavCenter>
+        <NavCenter align="center" justify="space-between"></NavCenter>
         <BottomContainer>
           <NavBottom justify="space-between">
             <Section align="center">
@@ -80,7 +95,7 @@ const Header = () => {
             <UserAddOutlined />
             <HeaderIcon gap="15px">
               <SearchOutlined onClick={() => toggleDrawer("search")} />
-              <Badge count={3} size="small" color="#7B0323">
+              <Badge count={wishlistItems.length} size="small" color="#7B0323">
                 <HeartOutlined onClick={() => toggleDrawer("wishlist")} />
               </Badge>
               <Badge count={cartItems.length} size="small" color="#7B0323">
@@ -93,9 +108,7 @@ const Header = () => {
                 onClose={closeCartDrawer}
                 open={drawerOpen}
               >
-                {drawerContent === "search" && <SearchDrawer />}
-                {drawerContent === "cart" && <CartDrawer />}
-                {drawerContent === "wishlist" && <p>Wishlist contents...</p>}
+                <DrawerContent drawerContent={drawerContent} />
               </Drawer>
             </HeaderIcon>
           </NavBottom>

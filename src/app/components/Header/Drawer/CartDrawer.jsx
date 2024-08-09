@@ -1,5 +1,5 @@
 import React from "react";
-import { Drawer, List, Button, Space, Typography } from "antd";
+import { Drawer, List, Button, Space, Typography, Image } from "antd";
 import { useStore } from "../../../../context/Product";
 import { CustomButton, CustomInput } from "../headerStyled";
 
@@ -51,7 +51,7 @@ const CartDrawer = () => {
           <List.Item>
             <List.Item.Meta
               avatar={
-                <img
+                <Image
                   src={`${API_BASE_URL}/${item.image}`}
                   alt={item.name}
                   width={100}

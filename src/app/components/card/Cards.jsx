@@ -1,5 +1,5 @@
 "use client";
-import { EyeOutlined, HeartFilled } from "@ant-design/icons";
+import { EyeOutlined, HeartFilled, HeartOutlined } from "@ant-design/icons";
 import { Flex, Modal, Skeleton } from "antd";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -23,7 +23,8 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 function Cards() {
   const router = useRouter();
-  const { products } = useStore();
+  const { products, addToWishlist, wishlistItems, removeFromWishlist } =
+    useStore(); // Destructure addToWishlist and removeFromWishlist
   const [loading, setLoading] = useState(true);
   const [hideTabs, setHideTabs] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -48,7 +49,7 @@ function Cards() {
       <CardsContainer>
         {[...Array(4).keys()].map((index) => (
           <Card key={index}>
-            <Skeleton.Image active style={{ width: "350px", height: 200 }} />
+            <Skeleton.Image active style={{ width: "300px", height: 200 }} />
             <Skeleton active />
           </Card>
         ))}
@@ -70,6 +71,19 @@ function Cards() {
     setIsModalVisible(false);
   };
 
+  const isProductInWishlist = (productId) => {
+    return wishlistItems.some((item) => item.id === productId);
+  };
+
+  const handleWishlistClick = (e, product) => {
+    e.stopPropagation();
+    if (isProductInWishlist(product.id)) {
+      removeFromWishlist(product.id);
+    } else {
+      addToWishlist(product);
+    }
+  };
+
   return (
     <>
       {Object.keys(sameCaregoryProducts).length === 0 && loading
@@ -85,13 +99,18 @@ function Cards() {
                   <Card key={prod.id} onClick={() => handleCardClick(prod)}>
                     <InnerNested>
                       <Image
-                        width={500}
-                        height={200}
+                        width={300}
+                        height={400}
                         src={`${API_BASE_URL}/${prod.images[0].url}`}
                         alt={`Product image`}
+                        priority
                       />
-                      <Heart>
-                        <HeartFilled />
+                      <Heart onClick={(e) => handleWishlistClick(e, prod)}>
+                        {isProductInWishlist(prod.id) ? (
+                          <HeartFilled />
+                        ) : (
+                          <HeartOutlined />
+                        )}
                       </Heart>
                       <Discount>
                         <p>40%</p>
@@ -136,4 +155,5 @@ function Cards() {
     </>
   );
 }
+
 export default Cards;

@@ -73,7 +73,7 @@ export const cardData = [
 export const items = [
   {
     title: 'Polo Shirts',
-    image: 'https://era4apparels.com/cdn/shop/files/polo-bnr-new.png?v=1718981930&width=700',
+    image: 'https://era4apparels.com/cdn/shop/files/chinos-bnr-men.jpg?v=1718285368&width=600',
   },
   {
     title: 'Dri-Fits',
