@@ -5,12 +5,13 @@ import {
   ShoppingCartOutlined,
   UserAddOutlined,
 } from "@ant-design/icons";
-import { Badge, Drawer, Dropdown, Menu, Space, Typography } from "antd";
+import { Badge, Drawer, Dropdown, Menu, Space, Typography, Button } from "antd";
 import { useRef, useState } from "react";
 import { useStore } from "../../../context/Product";
 import {
   BottomContainer,
   CategoriesWrapper,
+  FooterButton,
   HeaderBottom,
   HeaderIcon,
   NavBottom,
@@ -33,6 +34,7 @@ const Header = () => {
     openCartDrawer,
     closeCartDrawer,
     drawerOpen,
+    checkoutCart,
   } = useStore();
 
   const toggleDrawer = (content) => {
@@ -73,6 +75,15 @@ const Header = () => {
         return null;
     }
   };
+
+  const handleCheckout = async () => {
+    try {
+      await checkoutCart();
+    } catch (error) {
+      console.error("Checkout failed:", error);
+    }
+  };
+
   return (
     <>
       <HeaderBottom ref={navCenterRef}>
@@ -107,6 +118,13 @@ const Header = () => {
                 placement="right"
                 onClose={closeCartDrawer}
                 open={drawerOpen}
+                footer={
+                  drawerContent === "cart" && (
+                    <FooterButton onClick={handleCheckout}>
+                      Checkout
+                    </FooterButton>
+                  )
+                }
               >
                 <DrawerContent drawerContent={drawerContent} />
               </Drawer>

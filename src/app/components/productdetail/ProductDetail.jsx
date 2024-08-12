@@ -49,10 +49,6 @@ const ProductDetail = ({ id, hideTabs }) => {
   }, [singleProduct]);
 
   const handleAddToCart = () => {
-    if (!selectedSize) {
-      message.warning("Please select a size.");
-      return;
-    }
     addToCart(singleProduct, selectedSize, quantity);
   };
 
@@ -64,8 +60,15 @@ const ProductDetail = ({ id, hideTabs }) => {
     );
   }
 
-  const { name, actual_price, discount_price, description, variants, images } =
-    singleProduct;
+  const {
+    name,
+    actual_price,
+    discount_price,
+    description,
+    variants,
+    images,
+    total_quantity,
+  } = singleProduct;
 
   return (
     <ParentContainer vertical justify="space-around">
@@ -85,10 +88,10 @@ const ProductDetail = ({ id, hideTabs }) => {
         <InfoContainer>
           <Card>
             <Text strong style={{ color: "#7b0323" }}>
-              HURRY! ONLY {5} LEFT IN STOCK.
+              HURRY! ONLY {total_quantity} LEFT IN STOCK.
             </Text>
             <StockBar>
-              <StockIndicator stockPercentage={5} />
+              <StockIndicator stockPercentage={(total_quantity / 100) * 100} />
             </StockBar>
             <Title level={4}>{name}</Title>
             <Flex align="center" justify="space-between">

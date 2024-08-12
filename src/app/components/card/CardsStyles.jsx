@@ -1,4 +1,4 @@
-import { Flex } from "antd";
+import { Button, Flex } from "antd";
 import NextImage from "next/image";
 import styled, { keyframes } from "styled-components";
 
@@ -190,7 +190,7 @@ export const Heart = styled.div`
   opacity: 0;
   font-size: 20px;
   top: 4px;
-  right: 7.5px;
+  left: 7.5px;
   z-index: 1000;
   color: #7b0323;
   transition: width 0.3s, font-size 0.3s, opacity 0.3s;
@@ -201,13 +201,13 @@ export const Heart = styled.div`
 export const Discount = styled.div`
   position: absolute;
   text-align: center;
-  top: -5px;
-  left: 20px;
+  top: -12px;
+  right: 15px;
 
-  & p {
+  p {
     background-color: #7b0323;
     padding: 12px 6px;
-    border-radius: 100px;
+    border-radius: 50px;
     color: #fff;
   }
 `;
@@ -300,5 +300,22 @@ export const Price = styled.h4`
   & span {
     margin-right: 10px;
     color: #888;
+  }
+`;
+
+export const LoadMore = styled(Button)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px auto;
+  padding: 20px 20px;
+  border-radius: 100px;
+  background: #7b0323;
+  color: white;
+  transition: background 0.3s ease, color 0.3s ease;
+
+  &&:hover {
+    background: #7b0323;
+    color: white;
   }
 `;

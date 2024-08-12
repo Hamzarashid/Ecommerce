@@ -1,6 +1,13 @@
 "use client";
-import { EyeOutlined, HeartFilled, HeartOutlined } from "@ant-design/icons";
-import { Flex, Modal, Skeleton } from "antd";
+import {
+  ArrowDownOutlined,
+  DownloadOutlined,
+  EyeOutlined,
+  HeartFilled,
+  HeartOutlined,
+  MoreOutlined,
+} from "@ant-design/icons";
+import { Button, Flex, Modal, Skeleton } from "antd";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useStore } from "../../../context/Product";
@@ -16,6 +23,7 @@ import {
   Heart,
   Image,
   InnerNested,
+  LoadMore,
   Title,
 } from "./CardsStyles";
 
@@ -24,10 +32,11 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 function Cards() {
   const router = useRouter();
   const { products, addToWishlist, wishlistItems, removeFromWishlist } =
-    useStore(); // Destructure addToWishlist and removeFromWishlist
+    useStore();
   const [loading, setLoading] = useState(true);
   const [hideTabs, setHideTabs] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [displayedRows, setDisplayedRows] = useState(1);
 
   const sameCaregoryProducts = products.reduce((acc, prod) => {
     if (!acc[prod.category]) {
@@ -84,6 +93,10 @@ function Cards() {
     }
   };
 
+  const loadMoreRows = () => {
+    setDisplayedRows((prevRows) => prevRows + 1);
+  };
+
   return (
     <>
       {Object.keys(sameCaregoryProducts).length === 0 && loading
@@ -95,53 +108,64 @@ function Cards() {
                 subtitle={`Discover Our ${category} Collection!`}
               />
               <CardsContainer>
-                {sameCaregoryProducts[category].map((prod) => (
-                  <Card key={prod.id} onClick={() => handleCardClick(prod)}>
-                    <InnerNested>
-                      <Image
-                        width={300}
-                        height={400}
-                        src={`${API_BASE_URL}/${prod.images[0].url}`}
-                        alt={`Product image`}
-                        priority
-                      />
-                      <Heart onClick={(e) => handleWishlistClick(e, prod)}>
-                        {isProductInWishlist(prod.id) ? (
-                          <HeartFilled />
-                        ) : (
-                          <HeartOutlined />
-                        )}
-                      </Heart>
-                      <Discount>
-                        <p>40%</p>
-                      </Discount>
-                      <AddToCart
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          showModal();
-                        }}
-                      >
-                        <p>Add to Cart</p> <EyeOutlined />
-                      </AddToCart>
-                    </InnerNested>
-                    <CardInner vertical justify={"center"} align={"center"}>
-                      <Title>{prod.name}</Title>
-                      <Price>
-                        {prod.discount_price ? (
-                          <>
-                            <span>
-                              <del>Rs.{prod.actual_price}</del>
-                            </span>
-                            Rs.{prod.discount_price}
-                          </>
-                        ) : (
-                          <>Rs.{prod.actual_price}</>
-                        )}
-                      </Price>
-                    </CardInner>
-                  </Card>
-                ))}
+                {sameCaregoryProducts[category]
+                  .slice(0, displayedRows * 5)
+                  .map((prod) => (
+                    <Card key={prod.id} onClick={() => handleCardClick(prod)}>
+                      <InnerNested>
+                        <Image
+                          width={300}
+                          height={400}
+                          src={`${API_BASE_URL}/${prod.images[0].url}`}
+                          alt={`Product image`}
+                          priority
+                        />
+                        <Heart onClick={(e) => handleWishlistClick(e, prod)}>
+                          {isProductInWishlist(prod.id) ? (
+                            <HeartFilled />
+                          ) : (
+                            <HeartOutlined />
+                          )}
+                        </Heart>
+                        <Discount>
+                          <p>40%</p>
+                        </Discount>
+                        <AddToCart
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            showModal();
+                          }}
+                        >
+                          <p>Add to Cart</p> <EyeOutlined />
+                        </AddToCart>
+                      </InnerNested>
+                      <CardInner vertical justify={"center"} align={"center"}>
+                        <Title>{prod.name}</Title>
+                        <Price>
+                          {prod.discount_price ? (
+                            <>
+                              <span>
+                                <del>Rs.{prod.actual_price}</del>
+                              </span>
+                              Rs.{prod.discount_price}
+                            </>
+                          ) : (
+                            <>Rs.{prod.actual_price}</>
+                          )}
+                        </Price>
+                      </CardInner>
+                    </Card>
+                  ))}
               </CardsContainer>
+              {displayedRows * 5 < sameCaregoryProducts[category].length && (
+                <LoadMore
+                  iconPosition="end"
+                  icon={<ArrowDownOutlined />}
+                  onClick={loadMoreRows}
+                >
+                  Load More
+                </LoadMore>
+              )}
             </div>
           ))}
       <Modal

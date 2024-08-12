@@ -34,14 +34,6 @@ const CartDrawer = () => {
     updateCartItems(newCart);
   };
 
-  const handleCheckout = async () => {
-    try {
-      await checkoutCart();
-    } catch (error) {
-      console.error("Checkout failed:", error);
-    }
-  };
-
   return (
     <>
       <List
@@ -88,7 +80,6 @@ const CartDrawer = () => {
                       +
                     </CustomButton>
                   </Space.Compact>
-                  <Button onClick={handleCheckout}>Checkout</Button>
                 </>
               }
             />

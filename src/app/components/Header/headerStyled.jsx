@@ -70,3 +70,15 @@ export const CustomInput = styled(Input)`
   width: 60px;
   text-align: center;
 `;
+export const FooterButton = styled(Button)`
+  background-color: #7b0323;
+  border-color: #7b0323;
+  color: white;
+  width: 100%;
+
+  &:hover {
+    background-color: #000;
+    border-color: #000;
+    color: white;
+  }
+`;

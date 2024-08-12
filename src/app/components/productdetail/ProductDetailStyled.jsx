@@ -120,20 +120,24 @@ export const Card = styled.div`
 `;
 
 export const StockBar = styled.div`
-  background: #f8d7da;
-  height: 8px;
   width: 100%;
-  margin: 8px 0 0;
-  position: relative;
-  border-radius: 4px;
+  background-color: #f0f0f0;
+  border-radius: 8px;
   overflow: hidden;
+  height: 10px;
+  margin-top: 8px;
 `;
 
 export const StockIndicator = styled.div`
-  background: #7b0323;
-  height: 100%;
   width: ${(props) => props.stockPercentage}%;
-  position: absolute;
+  background-color: ${(props) =>
+    props.stockPercentage > 50
+      ? "#4caf50"
+      : props.stockPercentage > 20
+      ? "#ff9800"
+      : "#f44336"};
+  height: 100%;
+  transition: width 0.3s ease-in-out;
 `;
 
 export const SizeGuideLink = styled.a`
