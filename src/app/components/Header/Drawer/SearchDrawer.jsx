@@ -1,15 +1,18 @@
 import { Input, List, Typography } from "antd";
 import { useEffect, useState } from "react";
-import { useStore } from "../../../../context/Product";
+import { useStore } from "../../../context/Product";
+import { useRouter } from "next/navigation";
+import { Filter } from "../headerStyled";
 
 const { Text } = Typography;
 const { Search } = Input;
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 const SearchDrawer = () => {
+  const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);
-  const { products } = useStore();
+  const { products, closeCartDrawer } = useStore();
 
   useEffect(() => {
     if (searchQuery) {
@@ -22,6 +25,10 @@ const SearchDrawer = () => {
     }
   }, [searchQuery, products]);
 
+  const handleCardClick = (products) => {
+    router.push(`/product/${products.id}`);
+    closeCartDrawer();
+  };
   return (
     <>
       <Search
@@ -29,13 +36,16 @@ const SearchDrawer = () => {
         onSearch={(value) => setSearchQuery(value)}
         style={{ marginBottom: 20 }}
       />
-      <div>
+      <Filter>
         {filteredProducts.length > 0 ? (
           <List
             itemLayout="horizontal"
             dataSource={filteredProducts}
             renderItem={(product) => (
-              <List.Item key={product.id}>
+              <List.Item
+                key={product.id}
+                onClick={() => handleCardClick(product)}
+              >
                 <List.Item.Meta
                   avatar={
                     product.images.length > 0 && (
@@ -60,7 +70,7 @@ const SearchDrawer = () => {
         ) : (
           <p>No products found</p>
         )}
-      </div>
+      </Filter>
     </>
   );
 };

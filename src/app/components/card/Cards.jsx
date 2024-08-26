@@ -1,16 +1,15 @@
 "use client";
+import React from "react";
 import {
   ArrowDownOutlined,
-  DownloadOutlined,
   EyeOutlined,
   HeartFilled,
   HeartOutlined,
-  MoreOutlined,
 } from "@ant-design/icons";
-import { Button, Flex, Modal, Skeleton } from "antd";
+import { Flex, Modal, Skeleton } from "antd";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useStore } from "../../../context/Product";
+import { useStore } from "../../context/Product";
 import { Price } from "../../globalsStyled";
 import HeaderText from "../HeaderText/HeaderText";
 import ProductDetail from "../productdetail/ProductDetail";
@@ -37,6 +36,7 @@ function Cards() {
   const [hideTabs, setHideTabs] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [displayedRows, setDisplayedRows] = useState(1);
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   const sameCaregoryProducts = products.reduce((acc, prod) => {
     if (!acc[prod.category]) {
@@ -70,8 +70,9 @@ function Cards() {
     router.push(`/product/${product.id}`);
   };
 
-  const showModal = () => {
+  const showModal = (product) => {
     setHideTabs(true);
+    setSelectedProduct(product);
     setIsModalVisible(true);
   };
 
@@ -95,6 +96,10 @@ function Cards() {
 
   const loadMoreRows = () => {
     setDisplayedRows((prevRows) => prevRows + 1);
+  };
+
+  const calculateDiscountPercentage = (actualPrice, discountPrice) => {
+    return Math.round(((actualPrice - discountPrice) / actualPrice) * 100);
   };
 
   return (
@@ -127,13 +132,21 @@ function Cards() {
                             <HeartOutlined />
                           )}
                         </Heart>
-                        <Discount>
-                          <p>40%</p>
-                        </Discount>
+                        {prod.discount_price && (
+                          <Discount>
+                            <p>
+                              {calculateDiscountPercentage(
+                                prod.actual_price,
+                                prod.discount_price
+                              )}
+                              %
+                            </p>
+                          </Discount>
+                        )}
                         <AddToCart
                           onClick={(e) => {
                             e.stopPropagation();
-                            showModal();
+                            showModal(prod);
                           }}
                         >
                           <p>Add to Cart</p> <EyeOutlined />
@@ -174,7 +187,13 @@ function Cards() {
         footer={null}
         width={1000}
       >
-        <ProductDetail hideTabs={hideTabs} />
+        {selectedProduct && (
+          <ProductDetail
+            hideTabs={hideTabs}
+            id={selectedProduct.id}
+            setIsModalVisible={setIsModalVisible}
+          />
+        )}
       </Modal>
     </>
   );

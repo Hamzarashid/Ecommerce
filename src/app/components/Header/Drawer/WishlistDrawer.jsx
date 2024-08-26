@@ -1,5 +1,5 @@
 import { Drawer, Typography, Image, Button } from "antd";
-import { useStore } from "../../../../context/Product";
+import { useStore } from "../../../context/Product";
 import { useState } from "react";
 
 const { Text } = Typography;

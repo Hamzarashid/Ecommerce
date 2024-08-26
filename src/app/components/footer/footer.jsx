@@ -4,8 +4,8 @@ import {
   MailOutlined,
   PhoneOutlined,
   TikTokFilled,
-} from '@ant-design/icons';
-import { Col, Row } from 'antd';
+} from "@ant-design/icons";
+import { Col, Row } from "antd";
 import {
   ContactInfo,
   FooterContainer,
@@ -13,7 +13,7 @@ import {
   Icon,
   MenuList,
   SocialIcons,
-} from './FooterStyled';
+} from "./FooterStyled";
 
 const Footer = () => {
   return (

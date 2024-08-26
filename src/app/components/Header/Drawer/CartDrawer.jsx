@@ -1,13 +1,13 @@
 import React from "react";
 import { Drawer, List, Button, Space, Typography, Image } from "antd";
-import { useStore } from "../../../../context/Product";
+import { useStore } from "../../../context/Product";
 import { CustomButton, CustomInput } from "../headerStyled";
 
 const { Text } = Typography;
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 const CartDrawer = () => {
-  const { cartItems, updateCartItems, checkoutCart } = useStore();
+  const { cartItems, updateCartItems } = useStore();
 
   const handleIncrease = (id, size) => {
     const newCart = cartItems.map((item) => {

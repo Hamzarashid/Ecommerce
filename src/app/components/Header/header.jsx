@@ -5,9 +5,13 @@ import {
   ShoppingCartOutlined,
   UserAddOutlined,
 } from "@ant-design/icons";
-import { Badge, Drawer, Dropdown, Menu, Space, Typography, Button } from "antd";
+import { Badge, Drawer, Dropdown, Flex, Menu, Space, Typography } from "antd";
+import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
-import { useStore } from "../../../context/Product";
+import { useStore } from "../../context/Product";
+import CartDrawer from "./Drawer/CartDrawer";
+import SearchDrawer from "./Drawer/SearchDrawer";
+import WishlistDrawer from "./Drawer/WishlistDrawer";
 import {
   BottomContainer,
   CategoriesWrapper,
@@ -17,16 +21,18 @@ import {
   NavBottom,
   NavCenter,
   Section,
+  Subtotal,
 } from "./headerStyled";
-import SearchDrawer from "./Drawer/SearchDrawer";
-import CartDrawer from "./Drawer/CartDrawer";
-import WishlistDrawer from "./Drawer/WishlistDrawer";
+import Title from "antd/es/typography/Title";
+import useIsCheckoutPage from "../../utils/useIsCheckoutPage";
 
 const { Text } = Typography;
 
 const Header = () => {
   const navCenterRef = useRef(null);
+  const router = useRouter();
   const [drawerContent, setDrawerContent] = useState("cart");
+  const isCheckoutPage = useIsCheckoutPage();
   const {
     categories,
     cartItems,
@@ -34,7 +40,7 @@ const Header = () => {
     openCartDrawer,
     closeCartDrawer,
     drawerOpen,
-    checkoutCart,
+    calculateSubtotal,
   } = useStore();
 
   const toggleDrawer = (content) => {
@@ -77,11 +83,8 @@ const Header = () => {
   };
 
   const handleCheckout = async () => {
-    try {
-      await checkoutCart();
-    } catch (error) {
-      console.error("Checkout failed:", error);
-    }
+    closeCartDrawer();
+    router.push(`/checkout`);
   };
 
   return (
@@ -105,10 +108,18 @@ const Header = () => {
             </Section>
             <UserAddOutlined />
             <HeaderIcon gap="15px">
-              <SearchOutlined onClick={() => toggleDrawer("search")} />
-              <Badge count={wishlistItems.length} size="small" color="#7B0323">
-                <HeartOutlined onClick={() => toggleDrawer("wishlist")} />
-              </Badge>
+              {!isCheckoutPage && (
+                <>
+                  <SearchOutlined onClick={() => toggleDrawer("search")} />
+                  <Badge
+                    count={wishlistItems.length}
+                    size="small"
+                    color="#7B0323"
+                  >
+                    <HeartOutlined onClick={() => toggleDrawer("wishlist")} />
+                  </Badge>
+                </>
+              )}
               <Badge count={cartItems.length} size="small" color="#7B0323">
                 <ShoppingCartOutlined onClick={() => toggleDrawer("cart")} />
               </Badge>
@@ -119,10 +130,21 @@ const Header = () => {
                 onClose={closeCartDrawer}
                 open={drawerOpen}
                 footer={
-                  drawerContent === "cart" && (
-                    <FooterButton onClick={handleCheckout}>
-                      Checkout
-                    </FooterButton>
+                  drawerContent === "cart" &&
+                  cartItems.length > 0 && (
+                    <Space direction="vertical" style={{ width: "100%" }}>
+                      <Flex justify="space-between" align="center">
+                        <Subtotal level={5} strong>
+                          SUBTOTAL:
+                        </Subtotal>{" "}
+                        <Subtotal level={5} strong>
+                          Rs.{calculateSubtotal()}PKR
+                        </Subtotal>
+                      </Flex>
+                      <FooterButton onClick={handleCheckout}>
+                        Checkout
+                      </FooterButton>
+                    </Space>
                   )
                 }
               >

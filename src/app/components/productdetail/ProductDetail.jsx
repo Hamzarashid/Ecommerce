@@ -1,7 +1,7 @@
 "use client";
-import { Flex, Radio, Rate, Space, Typography, message } from "antd";
+import { Flex, Radio, Rate, Space, Typography } from "antd";
 import { useEffect, useState } from "react";
-import { useStore } from "../../../context/Product";
+import { useStore } from "../../context/Product";
 import { Price } from "../../globalsStyled";
 import SkeletonLoader from "./Loader/Skeleton";
 import {
@@ -18,6 +18,7 @@ import {
   SizeGuideLink,
   StockBar,
   StockIndicator,
+  StrikeThroughRadioButton,
   StyledCarousel,
   TextWrapper,
   Title,
@@ -27,8 +28,8 @@ import ProductDetailTab from "./producttab/ProductDetailTab";
 const { Text } = Typography;
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-const ProductDetail = ({ id, hideTabs }) => {
-  const { fetchProductById, singleProduct, addToCart, csrfToken } = useStore();
+const ProductDetail = ({ id, hideTabs, setIsModalVisible }) => {
+  const { fetchProductById, singleProduct, addToCart } = useStore();
   const [selectedSize, setSelectedSize] = useState("");
   const [quantity, setQuantity] = useState(1);
 
@@ -44,12 +45,19 @@ const ProductDetail = ({ id, hideTabs }) => {
       singleProduct.variants &&
       singleProduct.variants.length > 0
     ) {
-      setSelectedSize(singleProduct.variants[0].size);
+      const firstAvailableVariant = singleProduct.variants.find(
+        (variant) => variant.quantity > 0
+      );
+
+      if (firstAvailableVariant) {
+        setSelectedSize(firstAvailableVariant.size);
+      }
     }
   }, [singleProduct]);
 
   const handleAddToCart = () => {
     addToCart(singleProduct, selectedSize, quantity);
+    setIsModalVisible(false);
   };
 
   if (!singleProduct) {
@@ -124,11 +132,16 @@ const ProductDetail = ({ id, hideTabs }) => {
               buttonStyle="solid"
             >
               {variants.map((item) => (
-                <Radio.Button key={item.size} value={item.size}>
+                <StrikeThroughRadioButton
+                  key={item.size}
+                  value={item.size}
+                  disabled={item.quantity === 0}
+                >
                   {item.size}
-                </Radio.Button>
+                </StrikeThroughRadioButton>
               ))}
             </CustomRadioGroup>
+
             <ButtonWrapper>
               <Space.Compact block>
                 <CustomButton

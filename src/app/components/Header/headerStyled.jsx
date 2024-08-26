@@ -1,6 +1,14 @@
-import { Button, Dropdown as dd, Flex, Input, Button as AntButton } from "antd";
+import {
+  Button,
+  Dropdown as dd,
+  Flex,
+  Input,
+  Button as AntButton,
+  Typography,
+} from "antd";
 import styled from "styled-components";
 
+const { Title } = Typography;
 export const HeaderBottom = styled.div`
   top: 0;
   left: 0;
@@ -70,6 +78,12 @@ export const CustomInput = styled(Input)`
   width: 60px;
   text-align: center;
 `;
+
+export const Subtotal = styled(Title)`
+  color: #7b0323;
+  font-size: 18px !important;
+`;
+
 export const FooterButton = styled(Button)`
   background-color: #7b0323;
   border-color: #7b0323;
@@ -81,4 +95,7 @@ export const FooterButton = styled(Button)`
     border-color: #000;
     color: white;
   }
+`;
+export const Filter = styled.div`
+  cursor: pointer;
 `;

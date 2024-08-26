@@ -110,6 +110,7 @@ export const ProductProvider = ({ children }) => {
           body: JSON.stringify(cartItems),
         });
       });
+      updateCartItems([]);
     } catch (error) {
       console.error("Error adding to cart:", error);
     }
@@ -148,7 +149,13 @@ export const ProductProvider = ({ children }) => {
     updateCartItems(cart);
     openCartDrawer();
   };
-
+  // Calculate the subTotal
+  const calculateSubtotal = () => {
+    return cartItems.reduce((total, item) => {
+      const itemPrice = item.discount_price || item.actual_price;
+      return total + itemPrice * item.quantity;
+    }, 0);
+  };
   // AddToWishlist in LocalStorage
   const addToWishlist = (product) => {
     const wishlist = [...wishlistItems];
@@ -191,6 +198,7 @@ export const ProductProvider = ({ children }) => {
         wishlistItems,
         addToWishlist,
         removeFromWishlist,
+        calculateSubtotal,
       }}
     >
       {children}

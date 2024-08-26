@@ -192,7 +192,7 @@ export const CustomRadioGroup = styled(Radio.Group)`
       background-color: #7b0323;
       border-color: #7b0323;
     }
-  }
+
 
   @media (max-width: ${breakpoints.mobile}) {
     .ant-radio-button-wrapper {
@@ -200,7 +200,23 @@ export const CustomRadioGroup = styled(Radio.Group)`
     }
   }
 `;
+export const StrikeThroughRadioButton = styled(Radio.Button)`
+  position: relative;
+  opacity: ${({ disabled }) => (disabled ? 0.7 : 1)};
 
+  &.ant-radio-button-wrapper::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 2px;
+    background-color: #7b0323;
+    transform: translate(-50%, -50%) rotate(45deg);
+    display: ${({ disabled }) => (disabled ? "block" : "none")};
+    z-index: 1;
+  }
+`;
 const shake = keyframes`
   0% { transform: translateX(0); }
   25% { transform: translateX(-5px); }
