@@ -5,7 +5,7 @@ import {
   ShoppingCartOutlined,
   UserAddOutlined,
 } from "@ant-design/icons";
-import { Badge, Drawer, Dropdown, Flex, Menu, Space, Typography } from "antd";
+import { Badge, Drawer, Dropdown, Flex, Space, Typography, theme } from "antd";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { useStore } from "../../context/Product";
@@ -22,17 +22,18 @@ import {
   NavCenter,
   Section,
   Subtotal,
+  DropDownRender,
 } from "./headerStyled";
 import Title from "antd/es/typography/Title";
 import useIsCheckoutPage from "../../utils/useIsCheckoutPage";
 
-const { Text } = Typography;
-
+const { useToken } = theme;
 const Header = () => {
   const navCenterRef = useRef(null);
   const router = useRouter();
   const [drawerContent, setDrawerContent] = useState("cart");
   const isCheckoutPage = useIsCheckoutPage();
+  const { token } = useToken();
   const {
     categories,
     cartItems,
@@ -47,14 +48,6 @@ const Header = () => {
     setDrawerContent(content);
     openCartDrawer();
   };
-
-  const categoryMenu = (
-    <Menu>
-      {categories.map((category) => (
-        <Menu.Item key={category.id}>{category.name}</Menu.Item>
-      ))}
-    </Menu>
-  );
 
   const getDrawerTitle = () => {
     switch (drawerContent) {
@@ -94,7 +87,19 @@ const Header = () => {
         <BottomContainer>
           <NavBottom justify="space-between">
             <Section align="center">
-              <Dropdown overlay={categoryMenu}>
+              <Dropdown
+                dropdownRender={() => (
+                  <DropDownRender
+                    bgcolor={token.colorBgElevated}
+                    padding={token.paddingContentHorizontalSM}
+                    boxshadow={token.boxShadowSecondary}
+                  >
+                    {categories.map((category, index) => (
+                      <p key={index}>{category.name}</p>
+                    ))}
+                  </DropDownRender>
+                )}
+              >
                 <CategoriesWrapper
                   type="text"
                   onClick={(e) => e.preventDefault()}

@@ -9,6 +9,7 @@ import {
 import styled from "styled-components";
 
 const { Title } = Typography;
+
 export const HeaderBottom = styled.div`
   top: 0;
   left: 0;
@@ -42,6 +43,12 @@ export const Dropdown = styled(dd)`
   font-size: 0.8rem;
   color: white;
   width: 150px;
+`;
+
+export const DropDownRender = styled.div`
+  background-color: ${(props) => `${props.bgcolor}`};
+  padding: ${(props) => `${props.padding}px`};
+  box-shadow: ${(props) => `${props.boxshadow}`};
 `;
 
 export const CategoriesWrapper = styled(Button)`
