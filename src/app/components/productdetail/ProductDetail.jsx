@@ -1,5 +1,5 @@
 "use client";
-import { Flex, Radio, Rate, Space, Typography } from "antd";
+import { Flex, Rate, Space, Typography } from "antd";
 import { useEffect, useState } from "react";
 import { useStore } from "../../context/Product";
 import { Price } from "../../globalsStyled";
@@ -57,7 +57,9 @@ const ProductDetail = ({ id, hideTabs, setIsModalVisible }) => {
 
   const handleAddToCart = () => {
     addToCart(singleProduct, selectedSize, quantity);
-    setIsModalVisible(false);
+    if (typeof setIsModalVisible === "function") {
+      setIsModalVisible(false);
+    }
   };
 
   if (!singleProduct) {
@@ -95,12 +97,22 @@ const ProductDetail = ({ id, hideTabs, setIsModalVisible }) => {
         </ImageContainer>
         <InfoContainer>
           <Card>
-            <Text strong style={{ color: "#7b0323" }}>
-              HURRY! ONLY {total_quantity} LEFT IN STOCK.
-            </Text>
-            <StockBar>
-              <StockIndicator stockPercentage={(total_quantity / 100) * 100} />
-            </StockBar>
+            {total_quantity === 0 ? (
+              <Text strong style={{ color: "#ff4d4f" }}>
+                Sorry, this item is out of stock.
+              </Text>
+            ) : (
+              <>
+                <Text strong style={{ color: "#7b0323" }}>
+                  HURRY! ONLY {total_quantity} LEFT IN STOCK.
+                </Text>
+                <StockBar>
+                  <StockIndicator
+                    stockPercentage={(total_quantity / 100) * 100}
+                  />
+                </StockBar>
+              </>
+            )}
             <Title level={4}>{name}</Title>
             <Flex align="center" justify="space-between">
               <Flex align="center" justify="center">
@@ -143,25 +155,37 @@ const ProductDetail = ({ id, hideTabs, setIsModalVisible }) => {
             </CustomRadioGroup>
 
             <ButtonWrapper>
-              <Space.Compact block>
-                <CustomButton
-                  type="primary"
-                  onClick={() => setQuantity((q) => Math.max(q - 1, 1))}
-                >
-                  -
+              {total_quantity === 0 ? (
+                <CustomButton disabled block type="primary">
+                  Out of Stock
                 </CustomButton>
-                <CustomInput
-                  value={quantity}
-                  onChange={(e) => setQuantity(parseInt(e.target.value) || 1)}
-                />
-                <CustomButton
-                  type="primary"
-                  onClick={() => setQuantity((q) => q + 1)}
-                >
-                  +
-                </CustomButton>
-              </Space.Compact>
-              <CustomButton onClick={handleAddToCart}>ADD TO CART</CustomButton>
+              ) : (
+                <>
+                  <Space.Compact block>
+                    <CustomButton
+                      type="primary"
+                      onClick={() => setQuantity((q) => Math.max(q - 1, 1))}
+                    >
+                      -
+                    </CustomButton>
+                    <CustomInput
+                      value={quantity}
+                      onChange={(e) =>
+                        setQuantity(parseInt(e.target.value) || 1)
+                      }
+                    />
+                    <CustomButton
+                      type="primary"
+                      onClick={() => setQuantity((q) => q + 1)}
+                    >
+                      +
+                    </CustomButton>
+                  </Space.Compact>
+                  <CustomButton onClick={handleAddToCart}>
+                    ADD TO CART
+                  </CustomButton>
+                </>
+              )}
             </ButtonWrapper>
           </Card>
         </InfoContainer>

@@ -204,19 +204,51 @@ export const StrikeThroughRadioButton = styled(Radio.Button)`
   position: relative;
   opacity: ${({ disabled }) => (disabled ? 0.7 : 1)};
 
+  &:nth-child(1) {
+    &.ant-radio-button-wrapper::before {
+      transform: translate(-50%, -50%) rotate(39deg);
+    }
+  }
+
+  &:nth-child(2) {
+    &.ant-radio-button-wrapper::before {
+      transform: translate(-50%, -50%) rotate(35deg);
+    }
+  }
+
+  &:nth-child(3) {
+    &.ant-radio-button-wrapper::before {
+      transform: translate(-50%, -50%) rotate(35deg);
+    }
+  }
+  &:nth-child(4) {
+    &.ant-radio-button-wrapper::before {
+      transform: translate(-50%, -50%) rotate(33deg);
+    }
+  }
+  &:nth-child(5) {
+    &.ant-radio-button-wrapper::before {
+      transform: translate(-50%, -50%) rotate(27deg);
+    }
+  }
+  &:nth-child(6) {
+    &.ant-radio-button-wrapper::before {
+      transform: translate(-50%, -50%) rotate(22deg);
+    }
+  }
   &.ant-radio-button-wrapper::before {
     content: "";
     position: absolute;
+    width: 100%;
     top: 50%;
     left: 50%;
-    width: 100%;
-    height: 2px;
+    height: 1px;
     background-color: #7b0323;
-    transform: translate(-50%, -50%) rotate(45deg);
     display: ${({ disabled }) => (disabled ? "block" : "none")};
     z-index: 1;
   }
 `;
+
 const shake = keyframes`
   0% { transform: translateX(0); }
   25% { transform: translateX(-5px); }
@@ -226,9 +258,9 @@ const shake = keyframes`
 `;
 
 export const CustomButton = styled(AntButton)`
-  background: #7b0323;
+  background: #7b0323 !important;
   border-color: #7b0323;
-  color: white;
+  color: white !important;
   // animation: ${shake} 0.5s infinite;
 
   &:hover {

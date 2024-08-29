@@ -1,6 +1,5 @@
 "use client";
 import {
-  Button,
   Checkbox,
   Col,
   Form,
@@ -11,6 +10,7 @@ import {
   Typography,
 } from "antd";
 import Title from "antd/es/typography/Title";
+import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import { useStore } from "../../context/Product";
 import {
@@ -25,8 +25,6 @@ import {
   SummaryWrapper,
 } from "./CheckoutFormStyled";
 import AddressForm from "./addressform/AddressForm";
-import { useRouter } from "next/navigation";
-import { useResponsive } from "../../hooks/useResponsive";
 
 const { Text } = Typography;
 
@@ -34,8 +32,15 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 const CheckoutForm = () => {
   const router = useRouter();
-  const { cartItems, calculateSubtotal, checkoutCart, closeCartDrawer } =
-    useStore();
+  const [form] = Form.useForm();
+  const {
+    cartItems,
+    calculateSubtotal,
+    checkoutCart,
+    customerInfo,
+    updateCustomerInfo,
+    closeCartDrawer,
+  } = useStore();
   const subtotal = useMemo(() => calculateSubtotal(), [cartItems]);
   const [showBillingAddress, setShowBillingAddress] = useState(false);
 
@@ -43,7 +48,17 @@ const CheckoutForm = () => {
     setShowBillingAddress(e.target.value === "different");
   };
 
-  const handleCompleteOrder = async () => {
+  const handleCompleteOrder = async (values) => {
+    const { firstName, lastName, phone, postalCode, saveInfo, ...rest } =
+      values;
+    const customerInfo = {
+      ...rest,
+      name: `${firstName} ${lastName}`,
+      phone: parseInt(phone, 11),
+      postalCode: postalCode ? parseInt(postalCode, 10) : null,
+    };
+
+    updateCustomerInfo(customerInfo, saveInfo);
     closeCartDrawer();
     await checkoutCart();
     router.push(`/`);
@@ -60,13 +75,25 @@ const CheckoutForm = () => {
           xl={{ span: 12 }}
           xxl={{ span: 12 }}
         >
-          <Form layout="vertical">
+          <Form
+            form={form}
+            layout="vertical"
+            initialValues={customerInfo}
+            onFinish={handleCompleteOrder}
+          >
             <Title level={4}>Contact</Title>
-            <Form.Item>
-              <Input size="large" placeholder="Email " />
+            <Form.Item
+              name="email"
+              label="Email"
+              rules={[
+                { required: true, message: "Please enter your email" },
+                { type: "email", message: "Please enter a valid email" },
+              ]}
+            >
+              <Input size="large" placeholder="Email Address" />
             </Form.Item>
             <AddressForm title="Delivery" useTooltip />
-            <Form.Item>
+            <Form.Item name="saveInfo" valuePropName="checked">
               <Checkbox>Save this information for next time</Checkbox>
             </Form.Item>
             <Title level={4}>Payment</Title>
@@ -84,9 +111,11 @@ const CheckoutForm = () => {
                 <Radio value="different">Use a different billing address</Radio>
               </CustomRadioGroup>
 
-              {showBillingAddress && <AddressForm />}
+              {showBillingAddress && (
+                <AddressForm title="Billing Address" useTooltip />
+              )}
             </InnerContainer>
-            <CustomButton block onClick={handleCompleteOrder}>
+            <CustomButton block htmlType="submit">
               Complete Order
             </CustomButton>
           </Form>
@@ -123,11 +152,7 @@ const CheckoutForm = () => {
                   <Text>Size: {item.size}</Text>
                 </Col>
                 <Col>
-                  <Text>
-                    {item.discount_price
-                      ? `Rs.${item.discount_price}`
-                      : `Rs.${item.actual_price}`}
-                  </Text>
+                  <Text>{`Rs:${item.price}`}</Text>
                 </Col>
               </CustomRow>
             ))}

@@ -59,11 +59,7 @@ const CartDrawer = () => {
               }
               description={
                 <>
-                  <Text strong>
-                    {item.discount_price
-                      ? `Rs.${item.discount_price}`
-                      : `Rs.${item.actual_price}`}
-                  </Text>
+                  <Text strong> {`Rs:${item.price}`}</Text>
                   <br />
                   <Space.Compact block>
                     <CustomButton

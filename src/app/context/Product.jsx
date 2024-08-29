@@ -9,11 +9,28 @@ export const ProductProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
   const [wishlistItems, setWishlistItems] = useState([]);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [customerInfo, setCustomerInfo] = useState({
+    name: "",
+    email: "",
+    phone: null,
+    address: "",
+    city: "",
+    postalCode: null,
+    country: "Pakistan",
+  });
+
   const openCartDrawer = () => {
     setDrawerOpen(true);
   };
   const closeCartDrawer = () => {
     setDrawerOpen(false);
+  };
+
+  const updateCustomerInfo = (info) => {
+    setCustomerInfo((prevInfo) => ({
+      ...prevInfo,
+      ...info,
+    }));
   };
 
   useEffect(() => {
@@ -41,7 +58,7 @@ export const ProductProvider = ({ children }) => {
         console.error("Error fetching categories:", error);
       }
     };
-    // Fetch all data of AddToCart Data form local storage
+    // Fetch all data of AddToCart Data from local storage
     const loadCartItems = () => {
       try {
         const cart = localStorage.getItem("cart");
@@ -51,7 +68,7 @@ export const ProductProvider = ({ children }) => {
         setCartItems([]);
       }
     };
-    // Fetch  all data of WishList Data form local storage
+    // Fetch all data of WishList Data from local storage
     const loadWishlistItems = () => {
       try {
         const wishlist = localStorage.getItem("wishlist");
@@ -68,7 +85,7 @@ export const ProductProvider = ({ children }) => {
     loadWishlistItems();
   }, []);
 
-  // Fetach Single Product From id
+  // Fetch Single Product From id
   const fetchProductById = async (id) => {
     try {
       const response = await fetch(
@@ -93,7 +110,7 @@ export const ProductProvider = ({ children }) => {
     localStorage.setItem("wishlist", JSON.stringify(newWishlist));
   };
 
-  // Check Out Api
+  // Checkout API
   const checkoutCart = async () => {
     try {
       await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/csrf-token`, {
@@ -107,16 +124,20 @@ export const ProductProvider = ({ children }) => {
             "Content-Type": "application/json",
             "X-CSRF-TOKEN": data.csrf_token,
           },
-          body: JSON.stringify(cartItems),
+          body: JSON.stringify({
+            cart: cartItems,
+            customer: customerInfo,
+            total: calculateSubtotal(),
+          }),
         });
       });
       updateCartItems([]);
     } catch (error) {
-      console.error("Error adding to cart:", error);
+      console.error("Error completing checkout:", error);
     }
   };
 
-  // AddToCard in LocalStorage
+  // AddToCart in LocalStorage
   const addToCart = (product, selectedSize, quantity) => {
     const cart = [...cartItems];
     const variant = product.variants.find((v) => v.size === selectedSize);
@@ -142,20 +163,20 @@ export const ProductProvider = ({ children }) => {
         size: selectedSize,
         quantity,
         image: imageUrl,
-        actual_price: product.actual_price,
-        discount_price: product.discount_price,
+        price: product.discount_price ?? product.actual_price,
       });
     }
     updateCartItems(cart);
     openCartDrawer();
   };
-  // Calculate the subTotal
+
+  // Calculate the subtotal
   const calculateSubtotal = () => {
     return cartItems.reduce((total, item) => {
-      const itemPrice = item.discount_price || item.actual_price;
-      return total + itemPrice * item.quantity;
+      return total + item.price * item.quantity;
     }, 0);
   };
+
   // AddToWishlist in LocalStorage
   const addToWishlist = (product) => {
     const wishlist = [...wishlistItems];
@@ -173,7 +194,7 @@ export const ProductProvider = ({ children }) => {
     }
   };
 
-  // Remove From wishList
+  // Remove From wishlist
   const removeFromWishlist = (productId) => {
     const updatedWishlist = wishlistItems.filter(
       (item) => item.id !== productId
@@ -199,6 +220,8 @@ export const ProductProvider = ({ children }) => {
         addToWishlist,
         removeFromWishlist,
         calculateSubtotal,
+        customerInfo,
+        updateCustomerInfo,
       }}
     >
       {children}

@@ -30,8 +30,13 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 function Cards() {
   const router = useRouter();
-  const { products, addToWishlist, wishlistItems, removeFromWishlist } =
-    useStore();
+  const {
+    products,
+    addToWishlist,
+    wishlistItems,
+    removeFromWishlist,
+    singleProduct,
+  } = useStore();
   const [loading, setLoading] = useState(true);
   const [hideTabs, setHideTabs] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);

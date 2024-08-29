@@ -1,8 +1,8 @@
-'use client';
-import { LeftOutlined, RightOutlined } from '@ant-design/icons';
-import { Carousel, Rate } from 'antd';
-import { useRef } from 'react';
-import { reviews } from '../../constants';
+"use client";
+import { LeftOutlined, RightOutlined } from "@ant-design/icons";
+import { Carousel, Rate } from "antd";
+import { useRef } from "react";
+import { reviews } from "../../constants";
 import {
   Arrow,
   ArrowContainer,
@@ -15,7 +15,7 @@ import {
   ReviewsTitle,
   ReviewsTitleContainer,
   Title,
-} from './ReviewStyled';
+} from "./ReviewStyled";
 
 const CustomArrow = ({ className, style, onClick, icon }) => (
   <Arrow className={className} style={{ ...style }} onClick={onClick}>
@@ -44,7 +44,7 @@ const Review = () => {
         <ReviewsTitleContainer>
           <ReviewsTitle>Let customers speak for us</ReviewsTitle>
           <div>
-            <Rate disabled defaultValue={5} style={{ color: '#d3d21e' }} />
+            <Rate disabled defaultValue={5} style={{ color: "#d3d21e" }} />
             <span>from 137 reviews</span>
           </div>
         </ReviewsTitleContainer>
@@ -54,17 +54,33 @@ const Review = () => {
             ref={carouselRef}
             dots={false}
             slidesToShow={4}
-            prevArrow={<CustomArrow className="prev" icon={<LeftOutlined />} />}
-            nextArrow={
-              <CustomArrow className="next" icon={<RightOutlined />} />
-            }
+            responsive={[
+              {
+                breakpoint: 1024,
+                settings: {
+                  slidesToShow: 3,
+                },
+              },
+              {
+                breakpoint: 768,
+                settings: {
+                  slidesToShow: 2,
+                },
+              },
+              {
+                breakpoint: 480,
+                settings: {
+                  slidesToShow: 1,
+                },
+              },
+            ]}
           >
             {reviews.map((review) => (
               <Card key={review.id}>
                 <Rate
                   disabled
                   defaultValue={review.rating}
-                  style={{ color: '#d3d21e' }}
+                  style={{ color: "#d3d21e" }}
                 />
                 <Title>{review.title}</Title>
                 <Description>{review.description}</Description>
