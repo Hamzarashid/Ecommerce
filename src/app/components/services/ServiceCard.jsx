@@ -51,7 +51,7 @@ const ServicesCard = () => {
       )}
 
       {(screenSize === "tablet" || screenSize === "desktop") && (
-        <ServiceCardRow gutter={16} justify="center" align="middle">
+        <ServiceCardRow justify="center" align="middle">
           {services.map((service, index) => (
             <Col span={8} key={index}>
               <ServiceCardWrapper>

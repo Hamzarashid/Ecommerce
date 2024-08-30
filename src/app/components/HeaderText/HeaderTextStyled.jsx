@@ -30,6 +30,11 @@ export const Title = styled.h2`
   &:after {
     right: -120px;
   }
+      @media (max-width: 768px) {
+    &:before,
+    &:after {
+      display: none;  
+    }
 `;
 
 export const Subtitle = styled.p`

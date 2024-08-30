@@ -5,16 +5,18 @@ import {
   ShoppingCartOutlined,
   UserAddOutlined,
 } from "@ant-design/icons";
-import { Badge, Drawer, Dropdown, Flex, Space, Typography, theme } from "antd";
+import { Badge, Drawer, Dropdown, Flex, Space, theme } from "antd";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { useStore } from "../../context/Product";
+import useIsCheckoutPage from "../../utils/useIsCheckoutPage";
 import CartDrawer from "./Drawer/CartDrawer";
 import SearchDrawer from "./Drawer/SearchDrawer";
 import WishlistDrawer from "./Drawer/WishlistDrawer";
 import {
   BottomContainer,
   CategoriesWrapper,
+  DropDownRender,
   FooterButton,
   HeaderBottom,
   HeaderIcon,
@@ -22,10 +24,7 @@ import {
   NavCenter,
   Section,
   Subtotal,
-  DropDownRender,
 } from "./headerStyled";
-import Title from "antd/es/typography/Title";
-import useIsCheckoutPage from "../../utils/useIsCheckoutPage";
 
 const { useToken } = theme;
 const Header = () => {
@@ -80,6 +79,10 @@ const Header = () => {
     router.push(`/checkout`);
   };
 
+  const handleCategories = async (categoryname) => {
+    router.push(`/collections/${categoryname}`);
+  };
+
   return (
     <>
       <HeaderBottom ref={navCenterRef}>
@@ -89,13 +92,14 @@ const Header = () => {
             <Section align="center">
               <Dropdown
                 dropdownRender={() => (
-                  <DropDownRender
-                    bgcolor={token.colorBgElevated}
-                    padding={token.paddingContentHorizontalSM}
-                    boxshadow={token.boxShadowSecondary}
-                  >
+                  <DropDownRender boxshadow={token.boxShadowSecondary}>
                     {categories.map((category, index) => (
-                      <p key={index}>{category.name}</p>
+                      <p
+                        key={index}
+                        onClick={() => handleCategories(category.name)}
+                      >
+                        {category.name}
+                      </p>
                     ))}
                   </DropDownRender>
                 )}

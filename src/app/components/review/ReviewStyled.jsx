@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const ParentContainer = styled.div`
   display: flex;
@@ -123,17 +123,20 @@ export const CustomArrow = styled.div`
 `;
 
 export const Card = styled.div`
-  background: #ffffff;
+  background: white;
   padding: 20px;
-  border-radius: 8px;
-  border: none;
-  text-align: start;
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  justify-content: start;
-  height: 100%;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  margin: 10px 10px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  @media (max-width: 768px) {
+    margin: auto;
+  }
+
+  @media (max-width: 480px) {
+    margin: auto;
+  }
 `;
 
 export const Title = styled.h3`

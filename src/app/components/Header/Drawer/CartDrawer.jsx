@@ -1,5 +1,4 @@
-import React from "react";
-import { Drawer, List, Button, Space, Typography, Image } from "antd";
+import { Image, List, Space, Typography } from "antd";
 import { useStore } from "../../../context/Product";
 import { CustomButton, CustomInput } from "../headerStyled";
 

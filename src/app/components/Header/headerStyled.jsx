@@ -46,9 +46,18 @@ export const Dropdown = styled(dd)`
 `;
 
 export const DropDownRender = styled.div`
-  background-color: ${(props) => `${props.bgcolor}`};
-  padding: ${(props) => `${props.padding}px`};
+  background-color: #fff;
+  padding: 4px 0;
   box-shadow: ${(props) => `${props.boxshadow}`};
+  border-radius: 8px;
+  text-align: center;
+
+  & p:hover {
+    border-radius: 2px;
+    cursor: pointer;
+    background-color: #7b0323db;
+    color: white;
+  }
 `;
 
 export const CategoriesWrapper = styled(Button)`

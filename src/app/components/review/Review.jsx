@@ -65,12 +65,24 @@ const Review = () => {
                 breakpoint: 768,
                 settings: {
                   slidesToShow: 2,
+                  centerMode: true,
+                  centerPadding: "40px",
                 },
               },
               {
                 breakpoint: 480,
                 settings: {
                   slidesToShow: 1,
+                  centerMode: true,
+                  centerPadding: "80px",
+                },
+              },
+              {
+                breakpoint: 320,
+                settings: {
+                  slidesToShow: 1,
+                  centerMode: true,
+                  centerPadding: "80px",
                 },
               },
             ]}

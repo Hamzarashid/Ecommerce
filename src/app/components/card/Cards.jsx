@@ -28,7 +28,7 @@ import {
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-function Cards() {
+function Cards({ filter }) {
   const router = useRouter();
   const {
     products,
@@ -43,7 +43,11 @@ function Cards() {
   const [displayedRows, setDisplayedRows] = useState(1);
   const [selectedProduct, setSelectedProduct] = useState(null);
 
-  const sameCaregoryProducts = products.reduce((acc, prod) => {
+  const filteredProducts = filter
+    ? products.filter((product) => product.category === filter)
+    : products;
+
+  const sameCaregoryProducts = filteredProducts.reduce((acc, prod) => {
     if (!acc[prod.category]) {
       acc[prod.category] = [];
     }
@@ -113,10 +117,15 @@ function Cards() {
         ? skeletonLoader
         : Object.keys(sameCaregoryProducts).map((category) => (
             <div key={category}>
-              <HeaderText
-                title={category}
-                subtitle={`Discover Our ${category} Collection!`}
-              />
+              {!filter ? (
+                <HeaderText
+                  title={category}
+                  subtitle={`Discover Our ${category} Collection!`}
+                />
+              ) : (
+                ""
+              )}
+
               <CardsContainer>
                 {sameCaregoryProducts[category]
                   .slice(0, displayedRows * 5)

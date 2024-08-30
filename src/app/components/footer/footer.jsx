@@ -14,8 +14,10 @@ import {
   MenuList,
   SocialIcons,
 } from "./FooterStyled";
+import { useStore } from "../../context/Product";
 
 const Footer = () => {
+  const { categories } = useStore();
   return (
     <FooterContainer>
       <Row gutter={18} justify="center" align="middle">
@@ -37,21 +39,11 @@ const Footer = () => {
         <Col span={6}>
           <FooterTitle>Menu</FooterTitle>
           <MenuList>
-            <li>
-              <a href="#">Home</a>
-            </li>
-            <li>
-              <a href="#">Track Suits</a>
-            </li>
-            <li>
-              <a href="#">Polo Shirts</a>
-            </li>
-            <li>
-              <a href="#">Dri-fit Shirts</a>
-            </li>
-            <li>
-              <a href="#">Crew Neck Shirts</a>
-            </li>
+            {categories.map((category, index) => (
+              <li key={index}>
+                <a href="#">{category.name}</a>
+              </li>
+            ))}
           </MenuList>
         </Col>
         <Col span={6}>

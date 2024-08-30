@@ -69,7 +69,6 @@ export const CarouselWrap = styled.div`
     color: #4d4c4c;
   }
 `;
-
 export const Wrap = styled(CarouselWrap)`
   margin: 0;
 `;
@@ -206,7 +205,11 @@ export const Discount = styled.div`
 
   p {
     background-color: #7b0323;
-    padding: 12px 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 43px;
+    height: 43px;
     border-radius: 50px;
     color: #fff;
   }
